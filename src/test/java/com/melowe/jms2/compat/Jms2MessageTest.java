@@ -1,12 +1,24 @@
 package com.melowe.jms2.compat;
 
-import com.mockrunner.mock.jms.MockMessage;
+import com.mockrunner.mock.jms.MockBytesMessage;
+import com.mockrunner.mock.jms.MockMapMessage;
+import com.mockrunner.mock.jms.MockObjectMessage;
+import com.mockrunner.mock.jms.MockStreamMessage;
+import com.mockrunner.mock.jms.MockTextMessage;
+import java.io.Serializable;
+import java.util.Map;
 import javax.jms.Destination;
+import javax.jms.MapMessage;
 import javax.jms.Message;
+import javax.jms.MessageFormatException;
+import javax.jms.ObjectMessage;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -165,7 +177,7 @@ public class Jms2MessageTest {
     @Test
     public void testSetGetJMSDeliveryTime() throws Exception {
         jms2Message.setJMSDeliveryTime(9989L);
-        assertEquals(9989L,jms2Message.getJMSDeliveryTime());
+        assertEquals(9989L, jms2Message.getJMSDeliveryTime());
         verifyZeroInteractions(mockMessage);
 
     }
@@ -190,7 +202,7 @@ public class Jms2MessageTest {
     public void testPropertyExists() throws Exception {
         jms2Message.propertyExists("foo");
         verify(mockMessage, times(1)).propertyExists("foo");
-        
+
     }
 
     @Test
@@ -255,64 +267,150 @@ public class Jms2MessageTest {
 
     @Test
     public void testSetBooleanProperty() throws Exception {
+        jms2Message.setBooleanProperty("myprop", true);
+        verify(mockMessage).setBooleanProperty("myprop", true);
+
     }
 
     @Test
     public void testSetByteProperty() throws Exception {
+        byte b = 1;
+        jms2Message.setByteProperty("myprop", b);
+        verify(mockMessage).setByteProperty("myprop", b);
     }
 
     @Test
     public void testSetShortProperty() throws Exception {
+        short s = 1;
+        jms2Message.setShortProperty("myprop", s);
+        verify(mockMessage).setShortProperty("myprop", s);
     }
 
     @Test
     public void testSetIntProperty() throws Exception {
+        int i = 1;
+        jms2Message.setIntProperty("myprop", i);
+        verify(mockMessage).setIntProperty("myprop", i);
     }
 
     @Test
     public void testSetLongProperty() throws Exception {
+        long l = 1;
+        jms2Message.setLongProperty("myprop", l);
+        verify(mockMessage).setLongProperty("myprop", l);
     }
 
     @Test
     public void testSetFloatProperty() throws Exception {
+        float f = 1.8f;
+        jms2Message.setFloatProperty("myprop", f);
+        verify(mockMessage).setFloatProperty("myprop", f);
     }
 
     @Test
     public void testSetDoubleProperty() throws Exception {
+        double f = 1.8092d;
+        jms2Message.setDoubleProperty("myprop", f);
+        verify(mockMessage).setDoubleProperty("myprop", f);
     }
 
     @Test
     public void testSetStringProperty() throws Exception {
+        String s = "SOMEVALUE&**£((£";
+        jms2Message.setStringProperty("myprop", s);
+        verify(mockMessage).setStringProperty("myprop", s);
     }
 
     @Test
     public void testSetObjectProperty() throws Exception {
+        Object o = "SOMEVALUE&**£((£";
+        jms2Message.setObjectProperty("myprop", o);
+        verify(mockMessage).setObjectProperty("myprop", o);
+        
     }
 
     @Test
     public void testAcknowledge() throws Exception {
+        jms2Message.acknowledge();
+        verify(mockMessage).acknowledge();
     }
 
     @Test
     public void testClearBody() throws Exception {
-        new MockMessage().clearBody();
+        jms2Message.clearBody();
+        verify(mockMessage).clearBody();
     }
 
     @Test
-    public void testGetBody() throws Exception {
-           
+    public void testGetStringBody() throws Exception {
+       Message msg =  new Jms2Message(new MockTextMessage("HELLOW"));
+       assertEquals("HELLOW", msg.getBody(String.class));
+    }
+    
+    @Test
+    public void testGetMapBody() throws Exception {
+        MapMessage mapMessage = new MockMapMessage();
+        mapMessage.setString("GREETING", "HELLOW");
+        
+       Message msg =  new Jms2Message(mapMessage);
+       assertEquals("HELLOW", msg.getBody(Map.class).get("GREETING"));
     }
 
+    static class ObjectBody implements Serializable {
+        public String getValue() {
+            return "HELLOW";
+        }
+    }
+    
+     @Test
+    public void testGetObjectBody() throws Exception {
+         ObjectMessage oMessage = new MockObjectMessage(new ObjectBody());
+ 
+       Message msg =  new Jms2Message(oMessage);
+       ObjectBody body = (ObjectBody) msg.getBody(Serializable.class);
+       
+       assertEquals("HELLOW", body.getValue());
+    }
+    
+
+    @Ignore
+    @Test
+    public void testGetBytesBody() throws Exception {
+        MockBytesMessage bmsg = new MockBytesMessage();
+        bmsg.writeBytes("HELLOW".getBytes());
+        bmsg.setReadOnly(true);
+        
+        Message msg =  new Jms2Message(bmsg);
+        assertEquals("HELLOW", new String(msg.getBody(byte[].class)));
+        
+    }
+    
+    @Test(expected = MessageFormatException.class)
+    public void testGetBodyFromStreamMessage() throws Exception {
+        Message msg =  new Jms2Message(new MockStreamMessage());
+        msg.getBody(String.class);
+        
+    }
+    
     @Test
     public void testIsBodyAssignableTo() throws Exception {
+        
+        assertFalse(jms2Message.isBodyAssignableTo(String.class));
+        assertFalse(jms2Message.isBodyAssignableTo(Serializable.class));
+        assertFalse(jms2Message.isBodyAssignableTo(Map.class));
+        assertFalse(jms2Message.isBodyAssignableTo(byte[].class));
+
+        
+        assertTrue(new Jms2Message(new MockTextMessage()).isBodyAssignableTo(String.class));
+        assertTrue(new Jms2Message(new MockBytesMessage()).isBodyAssignableTo(byte[].class));
+        assertTrue(new Jms2Message(new MockMapMessage()).isBodyAssignableTo(Map.class));
+        assertTrue(new Jms2Message(new MockObjectMessage()).isBodyAssignableTo(Serializable.class));
     }
 
     @Test
     public void testGetDelegate() {
-        assertSame(mockMessage,jms2Message.getDelegate());
-        
-    }
+        assertSame(mockMessage, jms2Message.getDelegate());
 
-    
+    }
 
 }

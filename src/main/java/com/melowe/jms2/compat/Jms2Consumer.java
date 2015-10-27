@@ -6,6 +6,7 @@ import javax.jms.JMSException;
 import javax.jms.JMSRuntimeException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
+import javax.jms.MessageFormatException;
 import javax.jms.MessageListener;
 
 public class Jms2Consumer implements JMSConsumer {
@@ -64,14 +65,15 @@ public class Jms2Consumer implements JMSConsumer {
     }
 
     private <T> T getBody(final Message msg,final Class<T> type) {
+            
+        try {
+            return Jms2MessageUtil.getBody(msg, type);
+        } catch(MessageFormatException ex) {
+            throw Jms2Util.uncheck(ex);
+        } catch (JMSException ex) {
+            throw Jms2Util.uncheck(ex);
+        }
         
-         return Jms2Util.execute(new Callback<T>() {
-
-            @Override
-            public T execute() throws JMSException {
-                return Jms2MessageFactory.getBody(msg, type);
-            }
-        });
         
     }
     

@@ -2,11 +2,15 @@ package com.melowe.jms2.compat;
 
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
+import javax.jms.MessageFormatRuntimeException;
 import javax.jms.MessageListener;
+import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Matchers.any;
@@ -107,7 +111,7 @@ public class Jms2ConsumerTest {
         when(mockMessageConsumer.receive()).thenReturn(mockMessage);
         String result = consumer.receiveBody(String.class);
         assertEquals("RESULT", result);
-        
+
         verify(mockMessageConsumer, times(1)).receive();
         verify(mockMessage, times(1)).getText();
     }
@@ -117,9 +121,9 @@ public class Jms2ConsumerTest {
         TextMessage mockMessage = mock(TextMessage.class);
         when(mockMessage.getText()).thenReturn("RESULT");
         when(mockMessageConsumer.receive(99L)).thenReturn(mockMessage);
-        String result = consumer.receiveBody(String.class,99L);
+        String result = consumer.receiveBody(String.class, 99L);
         assertEquals("RESULT", result);
-        
+
         verify(mockMessageConsumer, times(1)).receive(99L);
         verify(mockMessage, times(1)).getText();
     }
@@ -131,11 +135,24 @@ public class Jms2ConsumerTest {
         when(mockMessageConsumer.receiveNoWait()).thenReturn(mockMessage);
         String result = consumer.receiveBodyNoWait(String.class);
         assertEquals("RESULT", result);
-        
+
         verify(mockMessageConsumer, times(1)).receiveNoWait();
         verify(mockMessage, times(1)).getText();
-        
 
+    }
+
+    @Test
+    public void testReceiveNoWaitBodyFromStreamMessage() throws Exception {
+        StreamMessage mockMessage = mock(StreamMessage.class);
+        when(mockMessageConsumer.receiveNoWait()).thenReturn(mockMessage);
+        try {
+            consumer.receiveBodyNoWait(String.class);
+            fail();
+        } catch(MessageFormatRuntimeException ex) {
+            assertNotNull(ex);
+        } finally {
+            verify(mockMessageConsumer).receiveNoWait();
+        }
     }
 
 }

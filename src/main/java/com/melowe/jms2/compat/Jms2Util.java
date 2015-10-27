@@ -10,6 +10,8 @@ import javax.jms.JMSException;
 import javax.jms.JMSRuntimeException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
+import javax.jms.MessageFormatException;
+import javax.jms.MessageFormatRuntimeException;
 import javax.jms.MessageListener;
 import javax.jms.Queue;
 import javax.jms.QueueBrowser;
@@ -85,6 +87,14 @@ public final class Jms2Util {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    static JMSRuntimeException uncheck(MessageFormatException ex) {
+        return new MessageFormatRuntimeException(ex.getMessage(), ex.getErrorCode(), ex);
+    }
+    
+    static JMSRuntimeException uncheck(JMSException ex) {
+        return new JMSRuntimeException(ex.getMessage(), ex.getErrorCode(), ex);
+    }
+
     private Jms2Util() {}
     
     static void commit(final Session session) {
@@ -102,7 +112,7 @@ public final class Jms2Util {
         try {
             return callback.execute();
         } catch (JMSException ex) {
-            throw new JMSRuntimeException(ex.getMessage(), ex.getErrorCode(), ex);
+            throw uncheck(ex);
         }
     }
 
@@ -271,6 +281,9 @@ public final class Jms2Util {
             @Override
             public Jms2Message execute() throws JMSException {
                 Message m = consumer.receive(timeout);
+                if(Objects.isNull(m)) {
+                    return null;
+                }
                 return Jms2MessageFactory.convert(m);
             }
         });

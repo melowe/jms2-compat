@@ -256,13 +256,12 @@ public class Jms2Message implements Message {
 
     @Override
     public <T> T getBody(Class<T> c) throws JMSException {
-
-        return Jms2MessageFactory.getBody(delegate, c);
+        return Jms2MessageUtil.getBody(delegate, c);
     }
 
     @Override
     public boolean isBodyAssignableTo(Class c) throws JMSException {
-        return Jms2MessageFactory.isBodyAssignableTo(delegate, c);
+        return Jms2MessageUtil.isBodyAssignableTo(delegate, c);
     }
     
     protected Message getDelegate() {
