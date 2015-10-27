@@ -1,6 +1,5 @@
 package com.melowe.jms2.compat;
 
-import com.melowe.jms2.compat.Jms2Message;
 import com.mockrunner.mock.jms.MockMessage;
 import javax.jms.Destination;
 import javax.jms.Message;
@@ -9,7 +8,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class Jms2MessageTest {
 

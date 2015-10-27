@@ -1,12 +1,5 @@
 package com.melowe.jms2.compat;
 
-import com.melowe.jms2.compat.Jms2StreamMessage;
-import com.melowe.jms2.compat.Jms2ObjectMessage;
-import com.melowe.jms2.compat.Jms2Message;
-import com.melowe.jms2.compat.Jms2Session;
-import com.melowe.jms2.compat.Jms2BytesMessage;
-import com.melowe.jms2.compat.Jms2MapMessage;
-import com.melowe.jms2.compat.Jms2TextMessage;
 import java.io.Serializable;
 import javax.jms.BytesMessage;
 import javax.jms.Destination;
@@ -17,10 +10,17 @@ import javax.jms.Session;
 import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 public class Jms2SessionTest {
 

@@ -1,6 +1,5 @@
 package com.melowe.jms2.compat;
 
-import com.melowe.jms2.compat.Jms2BytesMessage;
 import java.util.Collections;
 import javax.jms.BytesMessage;
 import org.junit.After;

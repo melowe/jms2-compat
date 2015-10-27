@@ -1,16 +1,14 @@
 package com.melowe.jms2.compat;
 
-import com.melowe.jms2.compat.Jms2Message;
-import com.melowe.jms2.compat.Jms2MessageListener;
-import com.melowe.jms2.compat.Jms2Consumer;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;

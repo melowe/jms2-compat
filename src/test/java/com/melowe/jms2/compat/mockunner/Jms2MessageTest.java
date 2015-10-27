@@ -1,21 +1,25 @@
 package com.melowe.jms2.compat.mockunner;
 
+import com.melowe.jms2.compat.Jms2BytesMessage;
+import com.melowe.jms2.compat.Jms2Message;
 import com.mockrunner.mock.jms.MockBytesMessage;
 import com.mockrunner.mock.jms.MockMessage;
 import com.mockrunner.mock.jms.MockQueue;
 import com.mockrunner.mock.jms.MockTextMessage;
-import com.melowe.jms2.compat.Jms2BytesMessage;
-import com.melowe.jms2.compat.Jms2Message;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import org.junit.After;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Ignore;
+import org.junit.Test;
 
 public class Jms2MessageTest {
 

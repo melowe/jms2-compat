@@ -1,6 +1,5 @@
 package com.melowe.jms2.compat;
 
-import com.melowe.jms2.compat.Jms2MapMessage;
 import javax.jms.MapMessage;
 import org.junit.After;
 import org.junit.Before;

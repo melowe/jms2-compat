@@ -1,6 +1,5 @@
 package com.melowe.jms2.compat;
 
-import com.melowe.jms2.compat.Jms2StreamMessage;
 import java.util.Collections;
 import javax.jms.StreamMessage;
 import org.junit.After;

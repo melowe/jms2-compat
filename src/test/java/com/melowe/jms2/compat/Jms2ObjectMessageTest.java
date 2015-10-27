@@ -1,13 +1,12 @@
 
 package com.melowe.jms2.compat;
 
-import com.melowe.jms2.compat.Jms2ObjectMessage;
 import java.io.Serializable;
 import javax.jms.ObjectMessage;
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;

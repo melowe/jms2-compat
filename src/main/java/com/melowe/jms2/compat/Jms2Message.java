@@ -6,8 +6,6 @@ import java.util.Objects;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageFormatException;
-import javax.jms.StreamMessage;
 
 
 public class Jms2Message implements Message {

@@ -1,18 +1,18 @@
 package com.melowe.jms2.compat;
 
-import com.melowe.jms2.compat.Jms2Session;
-import com.melowe.jms2.compat.Jms2Connection;
 import javax.jms.Connection;
 import javax.jms.ConnectionMetaData;
 import javax.jms.ExceptionListener;
 import javax.jms.Session;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;

@@ -1,17 +1,20 @@
 package com.melowe.jms2.compat;
 
-import com.melowe.jms2.compat.Jms2ConnectionFactory;
-import com.melowe.jms2.compat.Jms2Connection;
-import com.melowe.jms2.compat.Jms2Context;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSContext;
 import javax.jms.Session;
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 public class Jms2ConnectionFactoryTest {
 

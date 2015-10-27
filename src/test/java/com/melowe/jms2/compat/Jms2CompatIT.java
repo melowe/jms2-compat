@@ -1,8 +1,5 @@
 package com.melowe.jms2.compat;
 
-import com.melowe.jms2.compat.Jms2ConnectionFactory;
-import com.melowe.jms2.compat.Jms2MessageListener;
-import com.melowe.jms2.compat.Jms2TextMessage;
 import com.mockrunner.mock.jms.JMSMockObjectFactory;
 import com.mockrunner.mock.jms.MockBytesMessage;
 import com.mockrunner.mock.jms.MockConnectionFactory;
@@ -24,10 +21,12 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.jms.TextMessage;
 import org.junit.After;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Ignore;
+import org.junit.Test;
 
 public class Jms2CompatIT {
 

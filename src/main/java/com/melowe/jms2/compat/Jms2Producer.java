@@ -1,19 +1,19 @@
 package com.melowe.jms2.compat;
 
+import static com.melowe.jms2.compat.Jms2Util.execute;
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import javax.jms.CompletionListener;
 import javax.jms.Destination;
-import javax.jms.JMSProducer;
-import javax.jms.Message;
-import javax.jms.Session;
-import static com.melowe.jms2.compat.Jms2Util.execute;
-import java.util.Objects;
 import javax.jms.JMSException;
+import javax.jms.JMSProducer;
 import javax.jms.MapMessage;
+import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
+import javax.jms.Session;
 import javax.jms.TextMessage;
 
 public final class Jms2Producer implements JMSProducer {
