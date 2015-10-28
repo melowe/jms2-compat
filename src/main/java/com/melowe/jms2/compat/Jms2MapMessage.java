@@ -1,13 +1,11 @@
-
 package com.melowe.jms2.compat;
 
 import java.util.Enumeration;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 
-
 public final class Jms2MapMessage extends Jms2Message implements MapMessage {
-    
+
     private final MapMessage delegate;
 
     public Jms2MapMessage(MapMessage delegate) {
@@ -140,6 +138,4 @@ public final class Jms2MapMessage extends Jms2Message implements MapMessage {
         return delegate.itemExists(name);
     }
 
-  
-    
 }

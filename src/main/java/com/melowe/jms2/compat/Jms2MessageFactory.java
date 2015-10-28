@@ -145,6 +145,4 @@ public class Jms2MessageFactory {
         }
     }
 
-
-
 }

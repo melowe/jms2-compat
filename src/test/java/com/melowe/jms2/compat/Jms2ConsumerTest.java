@@ -148,7 +148,7 @@ public class Jms2ConsumerTest {
         try {
             consumer.receiveBodyNoWait(String.class);
             fail();
-        } catch(MessageFormatRuntimeException ex) {
+        } catch (MessageFormatRuntimeException ex) {
             assertNotNull(ex);
         } finally {
             verify(mockMessageConsumer).receiveNoWait();

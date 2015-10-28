@@ -26,7 +26,7 @@ public class Jms2ConnectionTest {
     Jms2Connection connection;
 
     Session mockSession;
-    
+
     public Jms2ConnectionTest() {
     }
 
@@ -43,7 +43,7 @@ public class Jms2ConnectionTest {
         mockConnection = mock(Connection.class);
         mockSession = mock(Session.class);
         when(mockConnection.createSession(anyBoolean(), anyInt())).thenReturn(mockSession);
-        
+
         connection = new Jms2Connection(mockConnection);
     }
 

@@ -54,8 +54,7 @@ public class Jms2ContextTest {
 
     @After
     public void tearDown() throws Exception {
-        
-        
+
         mockConnection = null;
         mockSession = null;
         jmsContext = null;
@@ -283,14 +282,14 @@ public class Jms2ContextTest {
 
     @Test
     public void testCreateTextMessageWithPayload() throws Exception {
-                TextMessage mockMessage = mock(TextMessage.class);
+        TextMessage mockMessage = mock(TextMessage.class);
         when(mockSession.createTextMessage()).thenReturn(mockMessage);
-        
+
         Jms2TextMessage result = (Jms2TextMessage) jmsContext.createTextMessage("payload");
         assertSame(mockMessage, result.getDelegate());
         verify(mockSession, times(1)).createTextMessage();
-        verify(mockMessage,times(1)).setText("payload");
-        verifyNoMoreInteractions(mockSession,mockMessage);
+        verify(mockMessage, times(1)).setText("payload");
+        verifyNoMoreInteractions(mockSession, mockMessage);
         verifyZeroInteractions(mockConnection);
     }
 
@@ -339,54 +338,52 @@ public class Jms2ContextTest {
     }
 
     @Test
-    public void testCreateConsumer_Destination()  throws Exception {
+    public void testCreateConsumer_Destination() throws Exception {
         Destination mockDestination = mock(Destination.class);
         JMSConsumer consumer = jmsContext.createConsumer(mockDestination);
-        verify(mockSession,times(1)).createConsumer(mockDestination);
+        verify(mockSession, times(1)).createConsumer(mockDestination);
         verifyNoMoreInteractions(mockSession);
-        verifyZeroInteractions(mockConnection,mockDestination);
-        
+        verifyZeroInteractions(mockConnection, mockDestination);
+
     }
 
     @Test
-    public void testCreateConsumer_Destination_String()   throws Exception {
+    public void testCreateConsumer_Destination_String() throws Exception {
         Destination mockDestination = mock(Destination.class);
-        JMSConsumer consumer = jmsContext.createConsumer(mockDestination,"SELECTOR");
-        verify(mockSession,times(1)).createConsumer(mockDestination,"SELECTOR");
+        JMSConsumer consumer = jmsContext.createConsumer(mockDestination, "SELECTOR");
+        verify(mockSession, times(1)).createConsumer(mockDestination, "SELECTOR");
         verifyNoMoreInteractions(mockSession);
-        verifyZeroInteractions(mockConnection,mockDestination);
-        
+        verifyZeroInteractions(mockConnection, mockDestination);
+
     }
 
     @Test
-    public void testCreateConsumerWithSlectorAndNoLocalFlag()  throws Exception {
+    public void testCreateConsumerWithSlectorAndNoLocalFlag() throws Exception {
         Destination mockDestination = mock(Destination.class);
-        JMSConsumer consumer = jmsContext.createConsumer(mockDestination,"SELECTOR",false);
-        verify(mockSession,times(1)).createConsumer(mockDestination,"SELECTOR");
+        JMSConsumer consumer = jmsContext.createConsumer(mockDestination, "SELECTOR", false);
+        verify(mockSession, times(1)).createConsumer(mockDestination, "SELECTOR");
         verifyNoMoreInteractions(mockSession);
-        verifyZeroInteractions(mockConnection,mockDestination);
-        
+        verifyZeroInteractions(mockConnection, mockDestination);
+
     }
 
     @Test
     public void testCreateQueue() throws Exception {
         jmsContext.createQueue("MYQ");
-        verify(mockSession,times(1)).createQueue("MYQ");
+        verify(mockSession, times(1)).createQueue("MYQ");
         verifyZeroInteractions(mockConnection);
     }
 
     @Test
-    public void testCreateTopic()throws Exception {
+    public void testCreateTopic() throws Exception {
         jmsContext.createTopic("MYT");
-        verify(mockSession,times(1)).createTopic("MYT");
-        verifyZeroInteractions(mockConnection); 
+        verify(mockSession, times(1)).createTopic("MYT");
+        verifyZeroInteractions(mockConnection);
     }
 
     @Test
     public void testCreateDurableConsumer() {
- 
-        
-        
+
     }
 
     @Test
@@ -411,33 +408,33 @@ public class Jms2ContextTest {
 
     @Test
     public void testCreateBrowser() throws Exception {
-        
+
         Queue mockQueue = mock(Queue.class);
         jmsContext.createBrowser(mockQueue);
-        
-        verify(mockSession,times(1)).createBrowser(mockQueue);
-        
+
+        verify(mockSession, times(1)).createBrowser(mockQueue);
+
         verifyNoMoreInteractions(mockSession);
-        verifyZeroInteractions(mockConnection,mockQueue);
+        verifyZeroInteractions(mockConnection, mockQueue);
     }
 
     @Test
     public void testCreateBrowserWithSelector() throws Exception {
-        
+
         Queue mockQueue = mock(Queue.class);
-        jmsContext.createBrowser(mockQueue,"SELECTOR");
-        
-        verify(mockSession,times(1)).createBrowser(mockQueue,"SELECTOR");
-        
+        jmsContext.createBrowser(mockQueue, "SELECTOR");
+
+        verify(mockSession, times(1)).createBrowser(mockQueue, "SELECTOR");
+
         verifyNoMoreInteractions(mockSession);
-        verifyZeroInteractions(mockConnection,mockQueue);
+        verifyZeroInteractions(mockConnection, mockQueue);
     }
 
     @Test
     public void testCreateTemporaryQueue() throws Exception {
         jmsContext.createTemporaryQueue();
-        verify(mockSession,times(1)).createTemporaryQueue();
-        
+        verify(mockSession, times(1)).createTemporaryQueue();
+
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection);
     }
@@ -445,21 +442,21 @@ public class Jms2ContextTest {
     @Test
     public void testCreateTemporaryTopic() throws Exception {
         jmsContext.createTemporaryTopic();
-        verify(mockSession,times(1)).createTemporaryTopic();
-        
+        verify(mockSession, times(1)).createTemporaryTopic();
+
         verifyNoMoreInteractions(mockSession);
-        verifyZeroInteractions(mockConnection); 
-        
+        verifyZeroInteractions(mockConnection);
+
     }
 
     @Test
     public void testUnsubscribe() throws Exception {
         jmsContext.unsubscribe("SOMETOPIC");
-        verify(mockSession,times(1)).unsubscribe("SOMETOPIC");
-        
+        verify(mockSession, times(1)).unsubscribe("SOMETOPIC");
+
         verifyNoMoreInteractions(mockSession);
-        verifyZeroInteractions(mockConnection); 
-        
+        verifyZeroInteractions(mockConnection);
+
     }
 
     @Test

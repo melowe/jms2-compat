@@ -283,7 +283,7 @@ public class Jms2SessionTest {
     public void testUnsubscribe() throws Exception {
         jms2Session.unsubscribe("MYSUB");
         verify(mockSession).unsubscribe("MYSUB");
-        
+
     }
 
 }

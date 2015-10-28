@@ -21,9 +21,8 @@ import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.jms.TopicSubscriber;
 
+public final class Jms2Session implements Session {
 
-public final  class Jms2Session implements Session {
-    
     private final Session session;
 
     protected Jms2Session(Session session) {
@@ -52,7 +51,7 @@ public final  class Jms2Session implements Session {
 
     @Override
     public ObjectMessage createObjectMessage(Serializable object) throws JMSException {
-        return Jms2MessageFactory.createObjectMessage(session,object);
+        return Jms2MessageFactory.createObjectMessage(session, object);
     }
 
     @Override
@@ -67,7 +66,7 @@ public final  class Jms2Session implements Session {
 
     @Override
     public TextMessage createTextMessage(String text) throws JMSException {
-        return Jms2MessageFactory.createTextMessage(session,text);
+        return Jms2MessageFactory.createTextMessage(session, text);
     }
 
     @Override
@@ -77,7 +76,7 @@ public final  class Jms2Session implements Session {
 
     @Override
     public int getAcknowledgeMode() throws JMSException {
-         return Jms2Util.getSessionMode(session);
+        return Jms2Util.getSessionMode(session);
     }
 
     @Override
@@ -104,16 +103,15 @@ public final  class Jms2Session implements Session {
     public MessageListener getMessageListener() throws JMSException {
         return Jms2Util.getMessageListener(session);
     }
-    
 
     @Override
     public void setMessageListener(MessageListener listener) throws JMSException {
-        Jms2Util.setMessageListener(session,listener);
+        Jms2Util.setMessageListener(session, listener);
     }
 
     @Override
     public void run() {
-        
+
         session.run();
     }
 
@@ -211,6 +209,5 @@ public final  class Jms2Session implements Session {
     public void unsubscribe(String name) throws JMSException {
         Jms2Util.unsubscribe(session, name);
     }
-    
-    
+
 }

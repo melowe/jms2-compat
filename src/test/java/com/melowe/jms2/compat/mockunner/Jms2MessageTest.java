@@ -156,7 +156,7 @@ public class Jms2MessageTest {
         message.clearProperties();
 
         assertNull(mockMessage.getStringProperty(propertyName));
-        
+
         assertEquals("CORRID", mockMessage.getJMSCorrelationID());
 
     }
@@ -180,10 +180,10 @@ public class Jms2MessageTest {
     @Test
     public void getPropertyNames() throws Exception {
         List<String> names = Arrays.asList("ONE", "TWO", "THREE");
-        for(String name : names) {
+        for (String name : names) {
             message.setStringProperty(name, name);
         }
-        
+
         Enumeration<String> enu = message.getPropertyNames();
 
         int counter = 0;
@@ -242,9 +242,9 @@ public class Jms2MessageTest {
     public void getStringBody() throws Exception {
         MockTextMessage textMessage = new MockTextMessage("HELLOW");
         Jms2Message msg = new Jms2Message(textMessage);
-        assertEquals("HELLOW", msg.getBody(String.class));   
+        assertEquals("HELLOW", msg.getBody(String.class));
     }
-    
+
     @Ignore
     @Test
     public void getBytesBody() throws Exception {
@@ -253,13 +253,11 @@ public class Jms2MessageTest {
         bytesMessage.writeUTF("HELLOW");
         bytesMessage.setReadOnly(true);
         Jms2BytesMessage msg = new Jms2BytesMessage(bytesMessage);
-        
+
         byte[] result = msg.getBody(byte[].class);
         assertArrayEquals(data, result);
     }
 
-    
-    
     public boolean isBodyAssignableTo(Class c) throws JMSException {
         return message.isBodyAssignableTo(c);
     }

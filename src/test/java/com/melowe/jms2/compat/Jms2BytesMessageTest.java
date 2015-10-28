@@ -193,8 +193,8 @@ public class Jms2BytesMessageTest {
     @Test
     public void testWriteBytes_3args() throws Exception {
         byte[] data = "DATA".getBytes();
-        jms2BytesMessage.writeBytes(data,0,10);
-        verify(mockMessage, times(1)).writeBytes(data,0,10);
+        jms2BytesMessage.writeBytes(data, 0, 10);
+        verify(mockMessage, times(1)).writeBytes(data, 0, 10);
     }
 
     @Test
@@ -202,7 +202,7 @@ public class Jms2BytesMessageTest {
         Object obj = Collections.EMPTY_LIST;
         jms2BytesMessage.writeObject(obj);
         verify(mockMessage, times(1)).writeObject(obj);
-        
+
     }
 
     @Test

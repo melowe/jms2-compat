@@ -1,14 +1,12 @@
-
 package com.melowe.jms2.compat;
 
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
 
-
 public final class Jms2BytesMessage extends Jms2Message implements BytesMessage {
-    
+
     private final BytesMessage delegate;
-    
+
     public Jms2BytesMessage(BytesMessage delegate) {
         super(delegate);
         this.delegate = delegate;
@@ -149,6 +147,4 @@ public final class Jms2BytesMessage extends Jms2Message implements BytesMessage 
         delegate.reset();
     }
 
-  
-    
 }

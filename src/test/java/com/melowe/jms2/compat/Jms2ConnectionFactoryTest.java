@@ -25,11 +25,10 @@ public class Jms2ConnectionFactoryTest {
     public Jms2ConnectionFactoryTest() {
     }
 
-
     @Before
     public void setUp() {
         mockConnectionFactory = mock(ConnectionFactory.class);
-        
+
         jms2ConnectionFactory = new Jms2ConnectionFactory(mockConnectionFactory);
     }
 
@@ -44,7 +43,7 @@ public class Jms2ConnectionFactoryTest {
     public void testCreateConnection() throws Exception {
         Connection mockConnection = mock(Connection.class);
         when(mockConnectionFactory.createConnection()).thenReturn(mockConnection);
-        
+
         Connection conn = jms2ConnectionFactory.createConnection();
         assertNotNull(conn);
         assertEquals(Jms2Connection.class, conn.getClass());
@@ -58,11 +57,11 @@ public class Jms2ConnectionFactoryTest {
     public void testCreateConnectionwithCredentials() throws Exception {
         final String username = "top";
         final String password = "secret";
-        
+
         Connection mockConnection = mock(Connection.class);
- 
+
         when(mockConnectionFactory.createConnection(username, password)).thenReturn(mockConnection);
-        
+
         Connection conn = jms2ConnectionFactory.createConnection(username, password);
         assertNotNull(conn);
 
@@ -78,9 +77,9 @@ public class Jms2ConnectionFactoryTest {
     public void testCreateContext() throws Exception {
 
         Connection mockConnection = mock(Connection.class);
- 
+
         when(mockConnectionFactory.createConnection()).thenReturn(mockConnection);
-        
+
         Connection conn = jms2ConnectionFactory.createConnection();
         assertNotNull(conn);
 
@@ -97,7 +96,7 @@ public class Jms2ConnectionFactoryTest {
 
         final String username = "top";
         final String password = "secret";
-        
+
         Connection mockConnection = mock(Connection.class);
         Session mockSession = mock(Session.class);
         when(mockConnectionFactory.createConnection(username, password)).thenReturn(mockConnection);
@@ -117,14 +116,13 @@ public class Jms2ConnectionFactoryTest {
     public void testCreateContextCredentialsAndTransactedSession() throws Exception {
         final String username = "top";
         final String password = "secret";
-        
+
         Connection mockConnection = mock(Connection.class);
         Session mockSession = mock(Session.class);
         when(mockConnectionFactory.createConnection(username, password)).thenReturn(mockConnection);
         when(mockConnection.createSession(true, Session.SESSION_TRANSACTED)).thenReturn(mockSession);
-        
-        
-        JMSContext context = jms2ConnectionFactory.createContext(username, password,JMSContext.SESSION_TRANSACTED);
+
+        JMSContext context = jms2ConnectionFactory.createContext(username, password, JMSContext.SESSION_TRANSACTED);
         assertNotNull(context);
         assertEquals(Jms2Context.class, context.getClass());
 
@@ -137,12 +135,11 @@ public class Jms2ConnectionFactoryTest {
     @Test
     public void testCreateContextClientAckSession() throws Exception {
 
-        
         Connection mockConnection = mock(Connection.class);
         Session mockSession = mock(Session.class);
         when(mockConnectionFactory.createConnection()).thenReturn(mockConnection);
-        when(mockConnection.createSession(false, Session.CLIENT_ACKNOWLEDGE)).thenReturn(mockSession); 
-        
+        when(mockConnection.createSession(false, Session.CLIENT_ACKNOWLEDGE)).thenReturn(mockSession);
+
         JMSContext context = jms2ConnectionFactory.createContext(JMSContext.CLIENT_ACKNOWLEDGE);
         assertNotNull(context);
         assertEquals(Jms2Context.class, context.getClass());
@@ -152,14 +149,14 @@ public class Jms2ConnectionFactoryTest {
         verifyNoMoreInteractions(mockConnectionFactory, mockConnection);
         verifyZeroInteractions(mockSession);
     }
-    
-     @Test
+
+    @Test
     public void testCreateTransactedSession() throws Exception {
         Connection mockConnection = mock(Connection.class);
         Session mockSession = mock(Session.class);
         when(mockConnectionFactory.createConnection()).thenReturn(mockConnection);
-        when(mockConnection.createSession(true, Session.SESSION_TRANSACTED)).thenReturn(mockSession); 
-        
+        when(mockConnection.createSession(true, Session.SESSION_TRANSACTED)).thenReturn(mockSession);
+
         JMSContext context = jms2ConnectionFactory.createContext(JMSContext.SESSION_TRANSACTED);
         assertNotNull(context);
         assertEquals(Jms2Context.class, context.getClass());
@@ -174,14 +171,13 @@ public class Jms2ConnectionFactoryTest {
     public void testCreateContextCredentialsAndClientAckSession() throws Exception {
         final String username = "top";
         final String password = "secret";
-        
+
         Connection mockConnection = mock(Connection.class);
         Session mockSession = mock(Session.class);
         when(mockConnectionFactory.createConnection(username, password)).thenReturn(mockConnection);
         when(mockConnection.createSession(false, Session.CLIENT_ACKNOWLEDGE)).thenReturn(mockSession);
-        
-        
-        JMSContext context = jms2ConnectionFactory.createContext(username, password,JMSContext.CLIENT_ACKNOWLEDGE);
+
+        JMSContext context = jms2ConnectionFactory.createContext(username, password, JMSContext.CLIENT_ACKNOWLEDGE);
         assertNotNull(context);
         assertEquals(Jms2Context.class, context.getClass());
 
@@ -198,8 +194,7 @@ public class Jms2ConnectionFactoryTest {
         Session mockSession = mock(Session.class);
         when(mockConnectionFactory.createConnection()).thenReturn(mockConnection);
         when(mockConnection.createSession(false, Session.AUTO_ACKNOWLEDGE)).thenReturn(mockSession);
-        
-        
+
         JMSContext context = jms2ConnectionFactory.createContext();
         assertNotNull(context);
         assertEquals(Jms2Context.class, context.getClass());
@@ -208,7 +203,7 @@ public class Jms2ConnectionFactoryTest {
         verify(mockConnection, times(1)).createSession(false, Session.AUTO_ACKNOWLEDGE);
         verifyNoMoreInteractions(mockConnectionFactory, mockConnection);
         verifyZeroInteractions(mockSession);
-        
+
     }
-    
+
 }

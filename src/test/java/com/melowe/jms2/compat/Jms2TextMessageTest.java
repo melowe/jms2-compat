@@ -1,4 +1,3 @@
-
 package com.melowe.jms2.compat;
 
 import javax.jms.TextMessage;
@@ -11,11 +10,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class Jms2TextMessageTest {
-    
+
     TextMessage mockMessage;
-    
+
     Jms2TextMessage textMessage;
-    
+
     public Jms2TextMessageTest() {
     }
 
@@ -23,9 +22,9 @@ public class Jms2TextMessageTest {
     public void setUp() {
         mockMessage = mock(TextMessage.class);
         textMessage = new Jms2TextMessage(mockMessage);
-        
+
     }
-    
+
     @After
     public void tearDown() {
         textMessage = null;
@@ -35,14 +34,14 @@ public class Jms2TextMessageTest {
     @Test
     public void testSetText() throws Exception {
         textMessage.setText("HELLOW");
-        verify(mockMessage,times(1)).setText("HELLOW");
-        
+        verify(mockMessage, times(1)).setText("HELLOW");
+
     }
 
     @Test
     public void testGetText() throws Exception {
         textMessage.getText();
-        verify(mockMessage,times(1)).getText();
+        verify(mockMessage, times(1)).getText();
     }
-    
+
 }

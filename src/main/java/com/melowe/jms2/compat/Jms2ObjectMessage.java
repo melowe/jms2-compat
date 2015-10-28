@@ -1,13 +1,11 @@
-
 package com.melowe.jms2.compat;
 
 import java.io.Serializable;
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
 
-
 public class Jms2ObjectMessage extends Jms2Message implements ObjectMessage {
-    
+
     private final ObjectMessage delegate;
 
     public Jms2ObjectMessage(ObjectMessage delegate) {
@@ -24,6 +22,5 @@ public class Jms2ObjectMessage extends Jms2Message implements ObjectMessage {
     public Serializable getObject() throws JMSException {
         return delegate.getObject();
     }
-    
-    
+
 }

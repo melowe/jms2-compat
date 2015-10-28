@@ -1,12 +1,10 @@
-
 package com.melowe.jms2.compat;
 
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
 
+public final class Jms2TextMessage extends Jms2Message implements TextMessage {
 
-public final class Jms2TextMessage extends Jms2Message implements TextMessage  {
-    
     private final TextMessage delegate;
 
     public Jms2TextMessage(TextMessage delegate) {
@@ -23,7 +21,5 @@ public final class Jms2TextMessage extends Jms2Message implements TextMessage  {
     public String getText() throws JMSException {
         return delegate.getText();
     }
-    
-    
-    
+
 }

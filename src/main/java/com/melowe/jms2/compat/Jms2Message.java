@@ -1,4 +1,3 @@
-
 package com.melowe.jms2.compat;
 
 import java.util.Enumeration;
@@ -7,13 +6,11 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
-
 public class Jms2Message implements Message {
-    
+
     private final Message delegate;
 
     private Long jms2DeliveryTime;
-    
 
     public Jms2Message(Message delegate) {
         this.delegate = Objects.requireNonNull(delegate);
@@ -263,9 +260,9 @@ public class Jms2Message implements Message {
     public boolean isBodyAssignableTo(Class c) throws JMSException {
         return Jms2MessageUtil.isBodyAssignableTo(delegate, c);
     }
-    
+
     protected Message getDelegate() {
         return delegate;
     }
-    
+
 }

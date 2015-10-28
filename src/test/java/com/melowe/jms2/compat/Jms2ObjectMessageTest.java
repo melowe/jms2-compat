@@ -1,4 +1,3 @@
-
 package com.melowe.jms2.compat;
 
 import java.io.Serializable;
@@ -12,23 +11,21 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-
 public class Jms2ObjectMessageTest {
-    
+
     ObjectMessage mockObjectMessage;
-    
+
     Jms2ObjectMessage objectMessage;
-    
+
     public Jms2ObjectMessageTest() {
     }
-    
-    
+
     @Before
     public void setUp() {
         mockObjectMessage = mock(ObjectMessage.class);
         objectMessage = new Jms2ObjectMessage(mockObjectMessage);
     }
-    
+
     @After
     public void tearDown() {
         verifyNoMoreInteractions(mockObjectMessage);
@@ -48,5 +45,5 @@ public class Jms2ObjectMessageTest {
         assertEquals("VALUE", result);
         verify(mockObjectMessage).getObject();
     }
-    
+
 }

@@ -1,12 +1,10 @@
-
 package com.melowe.jms2.compat;
 
 import javax.jms.JMSException;
 import javax.jms.StreamMessage;
 
-
 public final class Jms2StreamMessage extends Jms2Message implements StreamMessage {
-    
+
     private final StreamMessage delegate;
 
     public Jms2StreamMessage(StreamMessage delegate) {
@@ -133,7 +131,5 @@ public final class Jms2StreamMessage extends Jms2Message implements StreamMessag
     public void reset() throws JMSException {
         delegate.reset();
     }
-    
-    
-    
+
 }

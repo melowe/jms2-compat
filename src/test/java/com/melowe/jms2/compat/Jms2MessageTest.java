@@ -326,7 +326,7 @@ public class Jms2MessageTest {
         Object o = "SOMEVALUE&**£((£";
         jms2Message.setObjectProperty("myprop", o);
         verify(mockMessage).setObjectProperty("myprop", o);
-        
+
     }
 
     @Test
@@ -343,35 +343,35 @@ public class Jms2MessageTest {
 
     @Test
     public void testGetStringBody() throws Exception {
-       Message msg =  new Jms2Message(new MockTextMessage("HELLOW"));
-       assertEquals("HELLOW", msg.getBody(String.class));
+        Message msg = new Jms2Message(new MockTextMessage("HELLOW"));
+        assertEquals("HELLOW", msg.getBody(String.class));
     }
-    
+
     @Test
     public void testGetMapBody() throws Exception {
         MapMessage mapMessage = new MockMapMessage();
         mapMessage.setString("GREETING", "HELLOW");
-        
-       Message msg =  new Jms2Message(mapMessage);
-       assertEquals("HELLOW", msg.getBody(Map.class).get("GREETING"));
+
+        Message msg = new Jms2Message(mapMessage);
+        assertEquals("HELLOW", msg.getBody(Map.class).get("GREETING"));
     }
 
     static class ObjectBody implements Serializable {
+
         public String getValue() {
             return "HELLOW";
         }
     }
-    
-     @Test
+
+    @Test
     public void testGetObjectBody() throws Exception {
-         ObjectMessage oMessage = new MockObjectMessage(new ObjectBody());
- 
-       Message msg =  new Jms2Message(oMessage);
-       ObjectBody body = (ObjectBody) msg.getBody(Serializable.class);
-       
-       assertEquals("HELLOW", body.getValue());
+        ObjectMessage oMessage = new MockObjectMessage(new ObjectBody());
+
+        Message msg = new Jms2Message(oMessage);
+        ObjectBody body = (ObjectBody) msg.getBody(Serializable.class);
+
+        assertEquals("HELLOW", body.getValue());
     }
-    
 
     @Ignore
     @Test
@@ -379,28 +379,27 @@ public class Jms2MessageTest {
         MockBytesMessage bmsg = new MockBytesMessage();
         bmsg.writeBytes("HELLOW".getBytes());
         bmsg.setReadOnly(true);
-        
-        Message msg =  new Jms2Message(bmsg);
+
+        Message msg = new Jms2Message(bmsg);
         assertEquals("HELLOW", new String(msg.getBody(byte[].class)));
-        
+
     }
-    
+
     @Test(expected = MessageFormatException.class)
     public void testGetBodyFromStreamMessage() throws Exception {
-        Message msg =  new Jms2Message(new MockStreamMessage());
+        Message msg = new Jms2Message(new MockStreamMessage());
         msg.getBody(String.class);
-        
+
     }
-    
+
     @Test
     public void testIsBodyAssignableTo() throws Exception {
-        
+
         assertTrue(jms2Message.isBodyAssignableTo(String.class));
         assertTrue(jms2Message.isBodyAssignableTo(Serializable.class));
         assertTrue(jms2Message.isBodyAssignableTo(Map.class));
         assertTrue(jms2Message.isBodyAssignableTo(byte[].class));
 
-        
         assertTrue(new Jms2Message(new MockTextMessage()).isBodyAssignableTo(String.class));
         assertTrue(new Jms2Message(new MockBytesMessage()).isBodyAssignableTo(byte[].class));
         assertTrue(new Jms2Message(new MockMapMessage()).isBodyAssignableTo(Map.class));

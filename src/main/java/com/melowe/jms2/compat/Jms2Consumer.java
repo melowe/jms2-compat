@@ -52,32 +52,29 @@ public class Jms2Consumer implements JMSConsumer {
         Jms2Util.close(consumer);
     }
 
-    
-    
     @Override
     public <T> T receiveBody(final Class<T> c) {
         final Message msg = receive();
         if (msg == null) {
             return null;
         }
-        
+
         return getBody(msg, c);
 
     }
 
-    private <T> T getBody(final Message msg,final Class<T> type) {
-            
+    private <T> T getBody(final Message msg, final Class<T> type) {
+
         try {
             return Jms2MessageUtil.getBody(msg, type);
-        } catch(MessageFormatException ex) {
+        } catch (MessageFormatException ex) {
             throw Jms2Util.uncheck(ex);
         } catch (JMSException ex) {
             throw Jms2Util.uncheck(ex);
         }
-        
-        
+
     }
-    
+
     @Override
     public <T> T receiveBody(Class<T> type, long timeout) {
         Message msg = receive(timeout);

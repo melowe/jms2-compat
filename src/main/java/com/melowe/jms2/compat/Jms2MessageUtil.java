@@ -17,8 +17,9 @@ import javax.jms.TextMessage;
 
 public final class Jms2MessageUtil {
 
-    private Jms2MessageUtil() {}
-    
+    private Jms2MessageUtil() {
+    }
+
     static boolean isTextMessage(Message message, Class type) {
         return TextMessage.class.isInstance(message) && type.isAssignableFrom(String.class);
     }
@@ -34,25 +35,26 @@ public final class Jms2MessageUtil {
     static boolean isMapMessage(Message message, Class type) {
         return MapMessage.class.isInstance(message) && type.isAssignableFrom(java.util.Map.class);
     }
+
     static boolean isPlainMessage(Message message) {
-        List<Class<? extends Message>> types = 
-                Arrays.asList(TextMessage.class,BytesMessage.class,MapMessage.class,ObjectMessage.class,StreamMessage.class);
-        for(Class<? extends Message> c : types) {
-            if(c.isInstance(message)) {
+        List<Class<? extends Message>> types
+                = Arrays.asList(TextMessage.class, BytesMessage.class, MapMessage.class, ObjectMessage.class, StreamMessage.class);
+        for (Class<? extends Message> c : types) {
+            if (c.isInstance(message)) {
                 return false;
             }
         }
         return true;
     }
-    
+
     static boolean isBodyAssignableTo(Message message, Class type) {
-        if(StreamMessage.class.isInstance(message)) {
+        if (StreamMessage.class.isInstance(message)) {
             return false;
         }
-        return isPlainMessage(message) 
-                ||isTextMessage(message, type) 
-                || isBytesMessage(message, type) 
-                || isObjectMessage(message, type) 
+        return isPlainMessage(message)
+                || isTextMessage(message, type)
+                || isBytesMessage(message, type)
+                || isObjectMessage(message, type)
                 || isMapMessage(message, type);
     }
 

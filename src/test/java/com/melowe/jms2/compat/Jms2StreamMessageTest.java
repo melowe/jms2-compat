@@ -30,8 +30,6 @@ public class Jms2StreamMessageTest {
         verifyNoMoreInteractions(mockMessage);
     }
 
-
-
     @Test
     public void testReadBoolean() throws Exception {
         jms2StreamMessage.readBoolean();
@@ -44,15 +42,11 @@ public class Jms2StreamMessageTest {
         verify(mockMessage, times(1)).readByte();
     }
 
-
-
     @Test
     public void testReadShort() throws Exception {
         jms2StreamMessage.readShort();
         verify(mockMessage, times(1)).readShort();
     }
-
-
 
     @Test
     public void testReadChar() throws Exception {
@@ -84,15 +78,12 @@ public class Jms2StreamMessageTest {
         verify(mockMessage, times(1)).readDouble();
     }
 
-
-
     @Test
     public void testReadBytes_byteArr() throws Exception {
         byte[] data = new byte[10];
         jms2StreamMessage.readBytes(data);
         verify(mockMessage, times(1)).readBytes(data);
     }
-
 
     @Test
     public void testWriteBoolean() throws Exception {
@@ -163,8 +154,8 @@ public class Jms2StreamMessageTest {
     @Test
     public void testWriteBytes_3args() throws Exception {
         byte[] data = "DATA".getBytes();
-        jms2StreamMessage.writeBytes(data,0,10);
-        verify(mockMessage, times(1)).writeBytes(data,0,10);
+        jms2StreamMessage.writeBytes(data, 0, 10);
+        verify(mockMessage, times(1)).writeBytes(data, 0, 10);
     }
 
     @Test
@@ -172,7 +163,7 @@ public class Jms2StreamMessageTest {
         Object obj = Collections.EMPTY_LIST;
         jms2StreamMessage.writeObject(obj);
         verify(mockMessage, times(1)).writeObject(obj);
-        
+
     }
 
     @Test
@@ -180,26 +171,25 @@ public class Jms2StreamMessageTest {
         jms2StreamMessage.reset();
         verify(mockMessage, times(1)).reset();
     }
-    
-    
+
     @Test
     public void testReadString() throws Exception {
         jms2StreamMessage.readString();
         verify(mockMessage, times(1)).readString();
-        
+
     }
-    
+
     @Test
     public void testReadObject() throws Exception {
         jms2StreamMessage.readObject();
         verify(mockMessage, times(1)).readObject();
-        
+
     }
-    
+
     @Test
     public void testWriteString() throws Exception {
         jms2StreamMessage.writeString("HELLOW");
         verify(mockMessage, times(1)).writeString("HELLOW");
-        
+
     }
 }

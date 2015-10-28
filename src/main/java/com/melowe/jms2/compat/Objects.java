@@ -1,8 +1,5 @@
 package com.melowe.jms2.compat;
 
-import javax.jms.Message;
-
-
 public class Objects {
 
     static boolean nonNull(Object obj) {
@@ -13,13 +10,11 @@ public class Objects {
         return obj == null;
     }
 
-    static <T> T  requireNonNull(T obj) {
-        if(isNull(obj)) {
+    static <T> T requireNonNull(T obj) {
+        if (isNull(obj)) {
             throw new NullPointerException();
         }
         return obj;
     }
-    
-    
-    
+
 }

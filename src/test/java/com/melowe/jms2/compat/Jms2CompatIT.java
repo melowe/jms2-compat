@@ -43,7 +43,7 @@ public class Jms2CompatIT {
 
     @Before
     public void setUp() {
-        
+
         mockQueue = mockObjectFactory.getDestinationManager().createQueue("JUNIT");
         mockConnectionFactory = mockObjectFactory.createMockConnectionFactory();
         connectionFactory = new Jms2ConnectionFactory(mockConnectionFactory);
@@ -58,32 +58,33 @@ public class Jms2CompatIT {
 
     @Test
     public void sendStringBody() throws Exception {
-    
+
         try (JMSContext context = connectionFactory.createContext(JMSContext.SESSION_TRANSACTED)) {
             context.createProducer()
                     .send(mockQueue, "HELLOW");
         }
         assertTrue(mockConnectionFactory.getLatestConnection().isClosed());
-        assertEquals(1,mockQueue.getReceivedMessageList().size());
+        assertEquals(1, mockQueue.getReceivedMessageList().size());
         assertEquals("HELLOW", TextMessage.class.cast(mockQueue.getMessage()).getText());
-        
+
     }
-    
+
     @Test
     public void sendMapBody() throws Exception {
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("greeting", "HELLOW");
         try (JMSContext context = connectionFactory.createContext(JMSContext.SESSION_TRANSACTED)) {
             context.createProducer()
                     .send(mockQueue, map);
         }
         assertTrue(mockConnectionFactory.getLatestConnection().isClosed());
-        assertEquals(1,mockQueue.getReceivedMessageList().size());
+        assertEquals(1, mockQueue.getReceivedMessageList().size());
         assertEquals("HELLOW", MapMessage.class.cast(mockQueue.getMessage()).getString("greeting"));
     }
-    
-    static class DummyPayload implements Serializable {}
-    
+
+    static class DummyPayload implements Serializable {
+    }
+
     @Test
     public void sendObjectBody() throws Exception {
         DummyPayload payload = new DummyPayload();
@@ -93,10 +94,10 @@ public class Jms2CompatIT {
                     .send(mockQueue, payload);
         }
         assertTrue(mockConnectionFactory.getLatestConnection().isClosed());
-        assertEquals(1,mockQueue.getReceivedMessageList().size());
+        assertEquals(1, mockQueue.getReceivedMessageList().size());
         assertEquals(DummyPayload.class, ObjectMessage.class.cast(mockQueue.getMessage()).getObject().getClass());
     }
-    
+
     @Test
     public void sendBytesBody() throws Exception {
         byte[] payload = new byte[100];
@@ -106,10 +107,10 @@ public class Jms2CompatIT {
                     .send(mockQueue, payload);
         }
         assertTrue(mockConnectionFactory.getLatestConnection().isClosed());
-        assertEquals(1,mockQueue.getReceivedMessageList().size());
+        assertEquals(1, mockQueue.getReceivedMessageList().size());
         assertEquals(100L, BytesMessage.class.cast(mockQueue.getMessage()).getBodyLength());
     }
-    
+
     @Test
     public void receiveTextMessageSynchronous() throws Exception {
         mockQueue.addMessage(new MockTextMessage("HELLOW"));
@@ -163,18 +164,17 @@ public class Jms2CompatIT {
 
     }
 
-
     @Ignore
     @Test
     public void receiveBytesBodySynchonously() throws Exception {
-        
+
         byte[] data = "SOMETHING ELSE".getBytes();
         MockBytesMessage msg = new MockBytesMessage();
         msg.writeBytes(data, 0, data.length);
-     
+
         msg.setReadOnly(true);
-      //  msg.getBytes();
-        
+        //  msg.getBytes();
+
         mockQueue.addMessage(msg);
 
         try (JMSContext jmsContext = connectionFactory.createContext(JMSContext.AUTO_ACKNOWLEDGE)) {

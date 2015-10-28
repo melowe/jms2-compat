@@ -204,7 +204,7 @@ public final class Jms2Context implements JMSContext {
 
     @Override
     public JMSConsumer createDurableConsumer(Topic topic, String name, String selector, boolean noLocal) {
-        return Jms2Util.createDurableConsumer(session, topic, name,selector,noLocal);
+        return Jms2Util.createDurableConsumer(session, topic, name, selector, noLocal);
     }
 
     @Override
@@ -214,7 +214,7 @@ public final class Jms2Context implements JMSContext {
 
     @Override
     public JMSConsumer createSharedDurableConsumer(Topic topic, String name, String selector) {
-        return Jms2Util.createSharedDurableConsumer(session, topic, name,selector);
+        return Jms2Util.createSharedDurableConsumer(session, topic, name, selector);
     }
 
     @Override
@@ -224,17 +224,17 @@ public final class Jms2Context implements JMSContext {
 
     @Override
     public JMSConsumer createSharedConsumer(Topic topic, String name, String selector) {
-        return Jms2Util.createSharedConsumer(session, topic, name,selector);
+        return Jms2Util.createSharedConsumer(session, topic, name, selector);
     }
 
     @Override
     public QueueBrowser createBrowser(Queue queue) {
-        return Jms2Util.createBrowser(session,queue);
+        return Jms2Util.createBrowser(session, queue);
     }
 
     @Override
     public QueueBrowser createBrowser(Queue queue, String selector) {
-        return Jms2Util.createBrowser(session, queue,selector);
+        return Jms2Util.createBrowser(session, queue, selector);
     }
 
     @Override
@@ -257,6 +257,4 @@ public final class Jms2Context implements JMSContext {
         //TODO: 
     }
 
-    
-    
 }

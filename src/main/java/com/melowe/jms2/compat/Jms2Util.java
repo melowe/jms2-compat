@@ -1,6 +1,5 @@
 package com.melowe.jms2.compat;
 
-import java.util.Objects;
 import javax.jms.Connection;
 import javax.jms.ConnectionMetaData;
 import javax.jms.Destination;
@@ -30,7 +29,7 @@ public final class Jms2Util {
                 return session.createTemporaryQueue();
             }
         });
-     }
+    }
 
     static TemporaryTopic createTemporaryTopic(final Session session) {
         return execute(new Callback<TemporaryTopic>() {
@@ -41,8 +40,6 @@ public final class Jms2Util {
             }
         });
     }
-
-
 
     static QueueBrowser createBrowser(final Session session, final Queue queue) {
         return execute(new Callback<QueueBrowser>() {
@@ -59,15 +56,14 @@ public final class Jms2Util {
 
             @Override
             public QueueBrowser execute() throws JMSException {
-                return session.createBrowser(queue,selector);
+                return session.createBrowser(queue, selector);
             }
         });
-        
+
     }
 
     static JMSConsumer createDurableConsumer(Session session, Topic topic, String name) {
-        
-        
+
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -90,13 +86,14 @@ public final class Jms2Util {
     static JMSRuntimeException uncheck(MessageFormatException ex) {
         return new MessageFormatRuntimeException(ex.getMessage(), ex.getErrorCode(), ex);
     }
-    
+
     static JMSRuntimeException uncheck(JMSException ex) {
         return new JMSRuntimeException(ex.getMessage(), ex.getErrorCode(), ex);
     }
 
-    private Jms2Util() {}
-    
+    private Jms2Util() {
+    }
+
     static void commit(final Session session) {
         execute(new Callback<Void>() {
 
@@ -115,8 +112,6 @@ public final class Jms2Util {
             throw uncheck(ex);
         }
     }
-
-
 
     static void rollback(final Session session) {
         execute(new Callback<Void>() {
@@ -261,7 +256,7 @@ public final class Jms2Util {
             public String execute() throws JMSException {
                 return consumer.getMessageSelector();
             }
-        });    
+        });
     }
 
     static Jms2Message receive(final MessageConsumer consumer) {
@@ -281,7 +276,7 @@ public final class Jms2Util {
             @Override
             public Jms2Message execute() throws JMSException {
                 Message m = consumer.receive(timeout);
-                if(m == null) {
+                if (m == null) {
                     return null;
                 }
                 return Jms2MessageFactory.convert(m);
@@ -332,14 +327,14 @@ public final class Jms2Util {
         });
     }
 
-    static MessageConsumer createMessageConsumer(final Session session,final Destination destination,final String selector,final Boolean noLocal) {
+    static MessageConsumer createMessageConsumer(final Session session, final Destination destination, final String selector, final Boolean noLocal) {
         return execute(new Callback<MessageConsumer>() {
 
             @Override
             public MessageConsumer execute() throws JMSException {
                 //TODO: Deal with noLocal
 
-                if(selector == null) {
+                if (selector == null) {
                     return session.createConsumer(destination);
                 } else {
                     return session.createConsumer(destination, selector);
@@ -347,20 +342,20 @@ public final class Jms2Util {
             }
         });
     }
-    
+
     static JMSConsumer createConsumer(Session session, Destination destination) {
-        return createConsumer(session, destination,null,null);
+        return createConsumer(session, destination, null, null);
     }
 
     static JMSConsumer createConsumer(Session session, Destination destination, String selector) {
-        return createConsumer(session, destination,selector,null);
+        return createConsumer(session, destination, selector, null);
     }
 
-    static JMSConsumer createConsumer(Session session, Destination destination, String selector, Boolean arg) { 
-        return new Jms2Consumer(createMessageConsumer(session, destination, selector,null));
+    static JMSConsumer createConsumer(Session session, Destination destination, String selector, Boolean arg) {
+        return new Jms2Consumer(createMessageConsumer(session, destination, selector, null));
     }
 
-    static Queue createQueue(final Session session,final String queueName) {
+    static Queue createQueue(final Session session, final String queueName) {
         return execute(new Callback<Queue>() {
 
             @Override
@@ -370,7 +365,7 @@ public final class Jms2Util {
         });
     }
 
-    static Topic createTopic(final Session session,final String topicName) {
+    static Topic createTopic(final Session session, final String topicName) {
         return execute(new Callback<Topic>() {
 
             @Override
