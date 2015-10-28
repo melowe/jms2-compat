@@ -32,7 +32,7 @@ public final class Jms2Context implements JMSContext {
 
     private final Connection connection;
 
-    public Jms2Context(Connection connection, Session session) {
+    protected Jms2Context(Connection connection, Session session) {
         this.connection = Objects.requireNonNull(connection);
         this.session = Objects.requireNonNull(session);
     }

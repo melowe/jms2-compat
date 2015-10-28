@@ -8,7 +8,7 @@ import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.Session;
 
-public class Jms2ConnectionFactory implements ConnectionFactory {
+public final class Jms2ConnectionFactory implements ConnectionFactory {
 
     private final ConnectionFactory connectionFactory;
 

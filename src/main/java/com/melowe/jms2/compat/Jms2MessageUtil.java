@@ -13,8 +13,10 @@ import javax.jms.ObjectMessage;
 import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
 
-public class Jms2MessageUtil {
+public final class Jms2MessageUtil {
 
+    private Jms2MessageUtil() {}
+    
     static boolean isTextMessage(Message message, Class type) {
         return TextMessage.class.isInstance(message) && type.isAssignableFrom(String.class);
     }

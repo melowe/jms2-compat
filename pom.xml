@@ -9,6 +9,9 @@
     <scm>
         <url>https://github.com/melowe/jms2-compat</url>
     </scm>
+    
+
+    
     <build>
         <plugins>
             <plugin>
@@ -45,6 +48,20 @@
                 </executions>
             </plugin>
             
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.3</version>
+                <configuration>
+                    <links>
+                        <link>https://jms-spec.java.net/2.0/apidocs/</link>
+                        <link>http://docs.oracle.com/javase/7/docs/api/</link>
+                    </links>
+                    <linksource>true</linksource>
+                    <show>protected</show>
+                    <source>1.7</source>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

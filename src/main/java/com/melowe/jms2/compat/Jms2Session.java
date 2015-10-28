@@ -26,7 +26,7 @@ public final  class Jms2Session implements Session {
     
     private final Session session;
 
-    public Jms2Session(Session session) {
+    protected Jms2Session(Session session) {
         this.session = Objects.requireNonNull(session);
     }
 

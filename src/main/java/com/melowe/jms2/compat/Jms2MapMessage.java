@@ -6,7 +6,7 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 
 
-public class Jms2MapMessage extends Jms2Message implements MapMessage {
+public final class Jms2MapMessage extends Jms2Message implements MapMessage {
     
     private final MapMessage delegate;
 

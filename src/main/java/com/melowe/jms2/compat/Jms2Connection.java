@@ -17,7 +17,7 @@ public final class Jms2Connection implements Connection {
 
     private final Connection connection;
 
-    public Jms2Connection(Connection connection) {
+    protected Jms2Connection(Connection connection) {
         this.connection = Objects.requireNonNull(connection);
     }
 

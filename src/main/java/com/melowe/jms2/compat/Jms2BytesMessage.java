@@ -5,7 +5,7 @@ import javax.jms.BytesMessage;
 import javax.jms.JMSException;
 
 
-public class Jms2BytesMessage extends Jms2Message implements BytesMessage {
+public final class Jms2BytesMessage extends Jms2Message implements BytesMessage {
     
     private final BytesMessage delegate;
     
