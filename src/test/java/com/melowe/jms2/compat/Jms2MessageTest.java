@@ -395,16 +395,17 @@ public class Jms2MessageTest {
     @Test
     public void testIsBodyAssignableTo() throws Exception {
         
-        assertFalse(jms2Message.isBodyAssignableTo(String.class));
-        assertFalse(jms2Message.isBodyAssignableTo(Serializable.class));
-        assertFalse(jms2Message.isBodyAssignableTo(Map.class));
-        assertFalse(jms2Message.isBodyAssignableTo(byte[].class));
+        assertTrue(jms2Message.isBodyAssignableTo(String.class));
+        assertTrue(jms2Message.isBodyAssignableTo(Serializable.class));
+        assertTrue(jms2Message.isBodyAssignableTo(Map.class));
+        assertTrue(jms2Message.isBodyAssignableTo(byte[].class));
 
         
         assertTrue(new Jms2Message(new MockTextMessage()).isBodyAssignableTo(String.class));
         assertTrue(new Jms2Message(new MockBytesMessage()).isBodyAssignableTo(byte[].class));
         assertTrue(new Jms2Message(new MockMapMessage()).isBodyAssignableTo(Map.class));
         assertTrue(new Jms2Message(new MockObjectMessage()).isBodyAssignableTo(Serializable.class));
+        assertFalse(new Jms2Message(new MockStreamMessage()).isBodyAssignableTo(Object.class));
     }
 
     @Test
