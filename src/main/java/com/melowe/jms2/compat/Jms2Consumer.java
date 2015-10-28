@@ -1,6 +1,5 @@
 package com.melowe.jms2.compat;
 
-import java.util.Objects;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSException;
 import javax.jms.JMSRuntimeException;
@@ -53,10 +52,12 @@ public class Jms2Consumer implements JMSConsumer {
         Jms2Util.close(consumer);
     }
 
+    
+    
     @Override
     public <T> T receiveBody(final Class<T> c) {
         final Message msg = receive();
-        if (Objects.isNull(msg)) {
+        if (msg == null) {
             return null;
         }
         

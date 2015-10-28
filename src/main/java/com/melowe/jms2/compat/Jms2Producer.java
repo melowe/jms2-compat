@@ -3,7 +3,6 @@ package com.melowe.jms2.compat;
 import static com.melowe.jms2.compat.Jms2Util.execute;
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import javax.jms.CompletionListener;
 import javax.jms.Destination;

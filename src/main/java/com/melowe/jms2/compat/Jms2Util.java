@@ -281,7 +281,7 @@ public final class Jms2Util {
             @Override
             public Jms2Message execute() throws JMSException {
                 Message m = consumer.receive(timeout);
-                if(Objects.isNull(m)) {
+                if(m == null) {
                     return null;
                 }
                 return Jms2MessageFactory.convert(m);
@@ -339,7 +339,7 @@ public final class Jms2Util {
             public MessageConsumer execute() throws JMSException {
                 //TODO: Deal with noLocal
 
-                if(Objects.isNull(selector)) {
+                if(selector == null) {
                     return session.createConsumer(destination);
                 } else {
                     return session.createConsumer(destination, selector);
