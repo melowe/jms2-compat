@@ -42,7 +42,7 @@ public final class Jms2Producer implements JMSProducer {
     private CompletionListener completionListener;
 
     protected Jms2Producer(Session session) {
-        this.session = Objects.requireNonNull(session);
+        this.session = java.util.Objects.requireNonNull(session);
     }
 
     @Override

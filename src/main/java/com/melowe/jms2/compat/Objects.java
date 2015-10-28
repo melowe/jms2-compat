@@ -10,11 +10,4 @@ public class Objects {
         return obj == null;
     }
 
-    static <T> T requireNonNull(T obj) {
-        if (isNull(obj)) {
-            throw new NullPointerException();
-        }
-        return obj;
-    }
-
 }

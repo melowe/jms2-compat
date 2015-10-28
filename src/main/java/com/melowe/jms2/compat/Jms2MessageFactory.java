@@ -124,7 +124,7 @@ public class Jms2MessageFactory {
     }
 
     static Jms2Message convert(Message message) {
-        Objects.requireNonNull(message);
+        java.util.Objects.requireNonNull(message);
 
         if (Jms2Message.class.isInstance(message)) {
             throw new IllegalArgumentException("Attempting to convert Jms2Message implemention. ");
