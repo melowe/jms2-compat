@@ -201,7 +201,8 @@ public class Jms2MessageTest {
         assertEquals(b, mockMessage.getByteProperty("FOO"));
         assertEquals(b, message.getByteProperty("FOO"));
     }
-
+    
+    
     public void setShortProperty(String arg0, short arg1) throws JMSException {
         message.setShortProperty(arg0, arg1);
     }
@@ -262,4 +263,6 @@ public class Jms2MessageTest {
         return message.isBodyAssignableTo(c);
     }
 
+
+    
 }

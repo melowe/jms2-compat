@@ -62,19 +62,30 @@ public final class Jms2Util {
 
     }
 
-    static JMSConsumer createDurableConsumer(Session session, Topic topic, String name) {
-
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    static JMSConsumer createDurableConsumer(final Session session, final Topic topic, final String name) {
+        return createDurableConsumer(session, topic, name, null, null);
     }
 
-    static JMSConsumer createDurableConsumer(Session session, Topic topic, String name, String selector, boolean noLocal) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    static JMSConsumer createDurableConsumer(final Session session, final Topic topic, final String name, final String selector, final Boolean noLocal) {
+        return execute(new Callback<JMSConsumer>() {
+            @Override
+            public JMSConsumer execute() throws JMSException {
+                
+                if(noLocal != null) { 
+                    return new Jms2Consumer(session.createDurableConsumer(topic, name,selector,noLocal));            
+                } else {
+                    return new Jms2Consumer(session.createDurableConsumer(topic, name)); 
+                }
+            }
+        });
     }
 
     static JMSConsumer createSharedDurableConsumer(Session session, Topic topic, String name, String selector) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+        
+    
     static JMSConsumer createSharedConsumer(Session session, Topic topic, String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

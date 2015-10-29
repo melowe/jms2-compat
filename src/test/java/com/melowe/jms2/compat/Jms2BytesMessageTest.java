@@ -210,5 +210,6 @@ public class Jms2BytesMessageTest {
         jms2BytesMessage.reset();
         verify(mockMessage, times(1)).reset();
     }
+    
 
 }
