@@ -4,6 +4,8 @@
 
     <groupId>com.github.melowe</groupId>
     <artifactId>jms2-compat</artifactId>
+    <name>jms2-compat</name>
+    <description>Compatibility library for wrapping JMS 1 connection factories in JMS2 compliant objects.</description>
     <version>1.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <url>https://github.com/melowe/jms2-compat</url>
