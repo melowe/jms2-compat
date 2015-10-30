@@ -4,14 +4,14 @@
 
     <groupId>com.github.melowe</groupId>
     <artifactId>jms2-compat</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <url>https://github.com/melowe/jms2-compat</url>
     <scm>
         <url>https://github.com/melowe/jms2-compat</url>
         <connection>scm:git:git://github.com/melowe/jms2-compat.git</connection>
         <developerConnection>scm:git:git@github.com:melowe/jms2-compat.git</developerConnection>
-        <tag>jms2-compat-1.0.1</tag>
+        <tag>master</tag>
     </scm>
     
     <developers>
