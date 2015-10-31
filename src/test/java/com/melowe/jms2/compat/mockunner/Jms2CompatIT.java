@@ -1,10 +1,14 @@
-package com.melowe.jms2.compat;
+package com.melowe.jms2.compat.mockunner;
 
+import com.melowe.jms2.compat.Jms2ConnectionFactory;
+import com.melowe.jms2.compat.Jms2MessageListener;
+import com.melowe.jms2.compat.Jms2TextMessage;
 import com.mockrunner.mock.jms.JMSMockObjectFactory;
 import com.mockrunner.mock.jms.MockBytesMessage;
 import com.mockrunner.mock.jms.MockConnectionFactory;
 import com.mockrunner.mock.jms.MockQueue;
 import com.mockrunner.mock.jms.MockTextMessage;
+import com.mockrunner.mock.jms.MockTopic;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +27,7 @@ import javax.jms.TextMessage;
 import org.junit.After;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -38,13 +43,16 @@ public class Jms2CompatIT {
 
     MockQueue mockQueue;
 
+    MockTopic mockTopic;
+    
     public Jms2CompatIT() {
     }
 
     @Before
     public void setUp() {
 
-        mockQueue = mockObjectFactory.getDestinationManager().createQueue("JUNIT");
+        mockQueue = mockObjectFactory.getDestinationManager().createQueue("JUNIT_QUEUE");
+        mockTopic = mockObjectFactory.getDestinationManager().createTopic("JUNIT_TOPIC");
         mockConnectionFactory = mockObjectFactory.createMockConnectionFactory();
         connectionFactory = new Jms2ConnectionFactory(mockConnectionFactory);
 
@@ -184,6 +192,21 @@ public class Jms2CompatIT {
 
             assertArrayEquals(data, outcome);
         }
+    }
+    
+    @Test
+    public void createDurableConsumer() throws Exception {
+        String message = "Some message";
+        mockTopic.addMessage(new MockTextMessage(message));
+        
+        try (JMSContext jmsContext = connectionFactory.createContext()) {
+            
+            JMSConsumer consumer = jmsContext.createDurableConsumer(mockTopic, "MYSUB");
+            
+            assertEquals(message,consumer.receiveBodyNoWait(String.class));
+            assertNull(consumer.receiveBodyNoWait(String.class));
+        }
+        
     }
 
 }

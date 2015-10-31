@@ -154,5 +154,7 @@ public class Jms2ConsumerTest {
             verify(mockMessageConsumer).receiveNoWait();
         }
     }
+    
+
 
 }

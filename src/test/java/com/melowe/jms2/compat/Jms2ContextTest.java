@@ -16,6 +16,8 @@ import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
+import javax.jms.Topic;
+import javax.jms.TopicSubscriber;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -382,12 +384,41 @@ public class Jms2ContextTest {
     }
 
     @Test
-    public void testCreateDurableConsumer() {
+    public void testCreateDurableConsumer() throws Exception {
+        String subscriptionName = "MYSUB";
+        Topic mockTopic = mock(Topic.class);
+        TopicSubscriber mockConsumer = mock(TopicSubscriber.class);
+
+        when(mockSession.createDurableSubscriber(mockTopic, subscriptionName)).thenReturn(mockConsumer);
+        JMSConsumer consumer = jmsContext.createDurableConsumer(mockTopic, subscriptionName);
+
+        verify(mockSession, times(1)).createDurableSubscriber(mockTopic, subscriptionName);
+
+        consumer.receiveNoWait();
+
+        verify(mockConsumer, times(1)).receiveNoWait();
+        verifyNoMoreInteractions(mockConsumer);
+        verifyZeroInteractions(mockConnection);
 
     }
 
     @Test
-    public void testCreateDurableConsumer_4args() {
+    public void testCreateDurableConsumerWithSelectorAndNoLocal() throws Exception {
+        String selector = "FOO = 'BAR'";
+        String subscriptionName = "MYSUB";
+        Topic mockTopic = mock(Topic.class);
+        TopicSubscriber mockConsumer = mock(TopicSubscriber.class);
+
+        when(mockSession.createDurableSubscriber(mockTopic, subscriptionName,selector,true)).thenReturn(mockConsumer);
+        JMSConsumer consumer = jmsContext.createDurableConsumer(mockTopic, subscriptionName,selector,true);
+
+        verify(mockSession, times(1)).createDurableSubscriber(mockTopic, subscriptionName,selector,true);
+
+        consumer.receiveNoWait();
+
+        verify(mockConsumer, times(1)).receiveNoWait();
+        verifyNoMoreInteractions(mockConsumer);
+        verifyZeroInteractions(mockConnection);
     }
 
     @Test
