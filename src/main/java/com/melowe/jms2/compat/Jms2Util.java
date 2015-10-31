@@ -18,6 +18,7 @@ import javax.jms.Session;
 import javax.jms.TemporaryQueue;
 import javax.jms.TemporaryTopic;
 import javax.jms.Topic;
+import javax.jms.TopicSubscriber;
 
 public final class Jms2Util {
 
@@ -71,7 +72,7 @@ public final class Jms2Util {
     }
 
     static JMSConsumer createSharedDurableConsumer(Session session, Topic topic, String name, String selector) {
-        return createConsumer(session, topic, selector);
+         return new Jms2Consumer(createDurableMessageConsumer(session, topic, name,selector,false));
     }
 
     static JMSConsumer createSharedConsumer(Session session, Topic topic, String name) {
@@ -79,8 +80,7 @@ public final class Jms2Util {
     }
 
     static JMSConsumer createSharedConsumer(Session session, Topic topic, String name, String selector) {
-
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return createDurableConsumer(session, topic, name, selector, false);
     }
 
     static JMSRuntimeException uncheck(MessageFormatException ex) {
@@ -334,26 +334,31 @@ public final class Jms2Util {
 
             @Override
             public TopicSubscriberAdaptor execute() throws JMSException {
+                TopicSubscriber subscriber;
+                if(selector == null) {
+                    subscriber = session.createDurableSubscriber(topic, name);
+                } else {
+                    subscriber = session.createDurableSubscriber(topic, name, selector, noLocal);
+                }
                 
-                return new TopicSubscriberAdaptor(session.createDurableSubscriber(topic, name, selector, noLocal));                
+                return new TopicSubscriberAdaptor(subscriber);                
             }
         });
     }
     
     static MessageConsumer createDurableMessageConsumer(final Session session, final Topic topic,final String name) {
         return execute(new Callback<TopicSubscriberAdaptor>() {
-
             @Override
             public TopicSubscriberAdaptor execute() throws JMSException {
-                
-                return new TopicSubscriberAdaptor(session.createDurableSubscriber(topic, name));                
+                TopicSubscriber topicSubscriber = session.createDurableSubscriber(topic, name);
+                return new TopicSubscriberAdaptor(topicSubscriber);                
             }
         });
     }
     
     
     static MessageConsumer createSharedMessageConsumer(final Session session, final Topic topic, final String sharedSubscriptionName, final String selector) {
-        return createDurableMessageConsumer(session, topic, selector, selector, false);
+        return createDurableMessageConsumer(session, topic, sharedSubscriptionName, selector, false);
     }
 
     static MessageConsumer createMessageConsumer(final Session session, final Destination destination, final String selector, final Boolean noLocal) {

@@ -409,10 +409,10 @@ public class Jms2ContextTest {
         Topic mockTopic = mock(Topic.class);
         TopicSubscriber mockConsumer = mock(TopicSubscriber.class);
 
-        when(mockSession.createDurableSubscriber(mockTopic, subscriptionName,selector,true)).thenReturn(mockConsumer);
-        JMSConsumer consumer = jmsContext.createDurableConsumer(mockTopic, subscriptionName,selector,true);
+        when(mockSession.createDurableSubscriber(mockTopic, subscriptionName, selector, true)).thenReturn(mockConsumer);
+        JMSConsumer consumer = jmsContext.createDurableConsumer(mockTopic, subscriptionName, selector, true);
 
-        verify(mockSession, times(1)).createDurableSubscriber(mockTopic, subscriptionName,selector,true);
+        verify(mockSession, times(1)).createDurableSubscriber(mockTopic, subscriptionName, selector, true);
 
         consumer.receiveNoWait();
 
@@ -422,15 +422,63 @@ public class Jms2ContextTest {
     }
 
     @Test
-    public void testCreateSharedDurableConsumer_Topic_String() {
+    public void testCreateSharedDurableConsumer() throws Exception {
+
+        String subscriptionName = "MYSUB";
+        Topic mockTopic = mock(Topic.class);
+        TopicSubscriber mockConsumer = mock(TopicSubscriber.class);
+
+        when(mockSession.createDurableSubscriber(mockTopic, subscriptionName)).thenReturn(mockConsumer);
+
+        JMSConsumer consumer = jmsContext.createSharedDurableConsumer(mockTopic, subscriptionName);
+
+        verify(mockSession, times(1)).createDurableSubscriber(mockTopic, subscriptionName);
+
+        consumer.receiveNoWait();
+
+        verify(mockConsumer, times(1)).receiveNoWait();
+        verifyNoMoreInteractions(mockConsumer);
+        verifyZeroInteractions(mockConnection);
     }
 
     @Test
-    public void testCreateSharedDurableConsumer_3args() {
+    public void testCreateSharedDurableConsumer_3args() throws Exception {
+        String selector = "SELECTOR";
+        String subscriptionName = "MYSUB";
+        Topic mockTopic = mock(Topic.class);
+        TopicSubscriber mockConsumer = mock(TopicSubscriber.class);
+
+        when(mockSession.createDurableSubscriber(mockTopic, subscriptionName, selector, false)).thenReturn(mockConsumer);
+
+        JMSConsumer consumer = jmsContext.createSharedDurableConsumer(mockTopic, subscriptionName, selector);
+
+        verify(mockSession, times(1)).createDurableSubscriber(mockTopic, subscriptionName, selector, false);
+
+        consumer.receiveNoWait();
+
+        verify(mockConsumer, times(1)).receiveNoWait();
+        verifyNoMoreInteractions(mockConsumer);
+        verifyZeroInteractions(mockConnection);
     }
 
     @Test
-    public void testCreateSharedConsumer_Topic_String() {
+    public void testCreateSharedConsumer() throws Exception {
+ 
+        String subscriptionName = "MYSUB";
+        Topic mockTopic = mock(Topic.class);
+        TopicSubscriber mockConsumer = mock(TopicSubscriber.class);
+
+        when(mockSession.createDurableSubscriber(mockTopic, subscriptionName)).thenReturn(mockConsumer);
+
+        JMSConsumer consumer = jmsContext.createSharedConsumer(mockTopic, subscriptionName);
+
+        verify(mockSession, times(1)).createDurableSubscriber(mockTopic, subscriptionName);
+
+        consumer.receiveNoWait();
+
+        verify(mockConsumer, times(1)).receiveNoWait();
+        verifyNoMoreInteractions(mockConsumer);
+        verifyZeroInteractions(mockConnection);
     }
 
     @Test

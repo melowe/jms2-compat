@@ -191,8 +191,8 @@ public final class Jms2Session implements Session {
     }
 
     @Override
-    public QueueBrowser createBrowser(Queue arg0, String arg1) throws JMSException {
-        return session.createBrowser(arg0, arg1);
+    public QueueBrowser createBrowser(Queue queue, String selector) throws JMSException {
+        return session.createBrowser(queue, selector);
     }
 
     @Override
