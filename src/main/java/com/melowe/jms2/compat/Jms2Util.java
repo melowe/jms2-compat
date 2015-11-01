@@ -91,6 +91,10 @@ public final class Jms2Util {
         return new JMSRuntimeException(ex.getMessage(), ex.getErrorCode(), ex);
     }
 
+    static boolean isClientAcknowledge(final Session session) {
+        return getSessionMode(session) == Session.CLIENT_ACKNOWLEDGE;
+     }
+
     private Jms2Util() {
     }
 

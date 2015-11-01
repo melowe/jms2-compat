@@ -12,10 +12,32 @@ import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageFormatException;
 import javax.jms.ObjectMessage;
+import javax.jms.Session;
 import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
 
 public final class Jms2MessageUtil {
+
+    private static void acknowledge(final Message m) {
+         Jms2Util.execute(new Callback<Void>() {
+
+            @Override
+            public Void execute() throws JMSException {
+                m.acknowledge();
+                return null;
+            }
+        });
+    }
+    
+    static void acknowledge(Session session, List<Message> acknowledgeMessages) {
+        if(!Jms2Util.isClientAcknowledge(session)) {
+            return;
+        }
+        for(Message  m : acknowledgeMessages) {
+            acknowledge(m);
+        }
+        
+    }
 
     private Jms2MessageUtil() {
     }

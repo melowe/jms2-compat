@@ -1,6 +1,9 @@
 package com.melowe.jms2.compat;
 
+import com.mockrunner.mock.jms.MockMessage;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 import javax.jms.BytesMessage;
 import javax.jms.Connection;
 import javax.jms.ConnectionMetaData;
@@ -29,6 +32,7 @@ import org.junit.Test;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -50,6 +54,7 @@ public class Jms2ContextTest {
     public void setUp() throws Exception {
         mockConnection = mock(Connection.class);
         mockSession = mock(Session.class);
+
         jmsContext = new Jms2Context(mockConnection, mockSession);
         when(mockConnection.createSession(anyBoolean(), anyInt())).thenReturn(mockSession);
     }
@@ -197,6 +202,7 @@ public class Jms2ContextTest {
         assertSame(mockMessage, m.getDelegate());
 
         verify(mockSession, times(1)).createBytesMessage();
+        verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection, mockMessage);
 
@@ -212,6 +218,7 @@ public class Jms2ContextTest {
         assertSame(mockMessage, result.getDelegate());
 
         verify(mockSession, times(1)).createMapMessage();
+        verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection, mockMessage);
     }
@@ -223,7 +230,7 @@ public class Jms2ContextTest {
 
         Jms2Message result = (Jms2Message) jmsContext.createMessage();
         assertSame(mockMessage, result.getDelegate());
-
+        verify(mockSession, times(1)).getAcknowledgeMode();
         verify(mockSession, times(1)).createMessage();
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection, mockMessage);
@@ -237,6 +244,7 @@ public class Jms2ContextTest {
         Jms2ObjectMessage result = (Jms2ObjectMessage) jmsContext.createObjectMessage();
         assertSame(mockMessage, result.getDelegate());
         verify(mockSession, times(1)).createObjectMessage();
+        verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection, mockMessage);
     }
@@ -253,6 +261,7 @@ public class Jms2ContextTest {
 
         verify(mockSession, times(1)).createObjectMessage();
         verify(mockMessage, times(1)).setObject(payload);
+        verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession, mockMessage);
 
         verifyZeroInteractions(mockConnection);
@@ -266,6 +275,7 @@ public class Jms2ContextTest {
 
         assertSame(mockMessage, result.getDelegate());
         verify(mockSession, times(1)).createStreamMessage();
+        verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection);
     }
@@ -278,6 +288,7 @@ public class Jms2ContextTest {
         Jms2TextMessage result = (Jms2TextMessage) jmsContext.createTextMessage();
         assertSame(mockMessage, result.getDelegate());
         verify(mockSession, times(1)).createTextMessage();
+        verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection);
     }
@@ -291,6 +302,7 @@ public class Jms2ContextTest {
         assertSame(mockMessage, result.getDelegate());
         verify(mockSession, times(1)).createTextMessage();
         verify(mockMessage, times(1)).setText("payload");
+        verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession, mockMessage);
         verifyZeroInteractions(mockConnection);
     }
@@ -463,7 +475,7 @@ public class Jms2ContextTest {
 
     @Test
     public void testCreateSharedConsumer() throws Exception {
- 
+
         String subscriptionName = "MYSUB";
         Topic mockTopic = mock(Topic.class);
         TopicSubscriber mockConsumer = mock(TopicSubscriber.class);
@@ -539,7 +551,28 @@ public class Jms2ContextTest {
     }
 
     @Test
-    public void testAcknowledge() {
+    public void testAcknowledge() throws Exception {
+
+        when(mockSession.getAcknowledgeMode()).thenReturn(Session.CLIENT_ACKNOWLEDGE);
+
+        Message msg = mock(Message.class);
+        Message msg2 = mock(Message.class);
+        Message msg3 = mock(Message.class);
+        List<Message> messages = Arrays.asList(msg, msg2, msg3);
+
+        Jms2MessageUtil.acknowledge(mockSession, messages);
+
+        verify(msg).acknowledge();
+        verify(msg2).acknowledge();
+        verify(msg3).acknowledge();
+
+        when(mockSession.getAcknowledgeMode()).thenReturn(Session.AUTO_ACKNOWLEDGE);
+
+        Jms2MessageUtil.acknowledge(mockSession, messages);
+
+        verify(mockSession, times(2)).getAcknowledgeMode();
+        verifyNoMoreInteractions(msg, msg2, msg3, mockSession);
+
     }
 
 }

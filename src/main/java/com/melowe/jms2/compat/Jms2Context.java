@@ -2,6 +2,8 @@ package com.melowe.jms2.compat;
 
 import static com.melowe.jms2.compat.Jms2Util.execute;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.jms.BytesMessage;
 import javax.jms.Connection;
@@ -32,6 +34,8 @@ public final class Jms2Context implements JMSContext {
 
     private final Connection connection;
 
+    private final List<Message> acknowledgeMessages = new ArrayList<>();
+    
     protected Jms2Context(Connection connection, Session session) {
         this.connection = Objects.requireNonNull(connection);
         this.session = Objects.requireNonNull(session);
@@ -105,45 +109,52 @@ public final class Jms2Context implements JMSContext {
         Jms2Util.close(connection, session);
     }
 
+    private <M extends Message> M add(M message) {
+        if(Jms2Util.getSessionMode(session) == Session.AUTO_ACKNOWLEDGE) {
+            acknowledgeMessages.add(message);
+        }
+        return message;
+    }
+    
     @Override
     public BytesMessage createBytesMessage() {
-        return Jms2MessageFactory.createBytesMessage(session);
+        return add(Jms2MessageFactory.createBytesMessage(session));
     }
 
     @Override
     public MapMessage createMapMessage() {
-        return Jms2MessageFactory.createMapMessage(session);
+        return add(Jms2MessageFactory.createMapMessage(session));
     }
 
     @Override
     public Message createMessage() {
-        return Jms2MessageFactory.createMessage(session);
+        return add(Jms2MessageFactory.createMessage(session));
     }
 
     @Override
     public ObjectMessage createObjectMessage() {
-        return Jms2MessageFactory.createObjectMessage(session);
+        return add(Jms2MessageFactory.createObjectMessage(session));
     }
 
     @Override
     public ObjectMessage createObjectMessage(Serializable object) {
-        return Jms2MessageFactory.createObjectMessage(session, object);
+        return add(Jms2MessageFactory.createObjectMessage(session, object));
     }
 
     @Override
     public StreamMessage createStreamMessage() {
-        return Jms2MessageFactory.createStreamMessage(session);
+        return add(Jms2MessageFactory.createStreamMessage(session));
     }
 
     @Override
     public TextMessage createTextMessage() {
 
-        return Jms2MessageFactory.createTextMessage(session);
+        return add(Jms2MessageFactory.createTextMessage(session));
     }
 
     @Override
     public TextMessage createTextMessage(String text) {
-        return Jms2MessageFactory.createTextMessage(session, text);
+        return add(Jms2MessageFactory.createTextMessage(session, text));
     }
 
     @Override
@@ -254,7 +265,7 @@ public final class Jms2Context implements JMSContext {
 
     @Override
     public void acknowledge() {
-        //TODO: 
+         Jms2MessageUtil.acknowledge(session,acknowledgeMessages);
     }
 
 }
