@@ -13,7 +13,11 @@ public class Jms2Message implements Message {
     private Long jms2DeliveryTime;
 
     public Jms2Message(Message delegate) {
+        if (getClass().isInstance(delegate)) {
+            throw new IllegalArgumentException("Unable to wrap a Jms2Message");
+        }
         this.delegate = Objects.requireNonNull(delegate);
+
     }
 
     @Override

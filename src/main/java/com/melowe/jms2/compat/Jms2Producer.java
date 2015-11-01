@@ -72,7 +72,25 @@ public final class Jms2Producer implements JMSProducer {
                     message.setJMSReplyTo(replyTo);
                 }
 
-                messageProducer.send(message);
+                if(Objects.nonNull(jmsCorrelationID)) {
+                    message.setJMSCorrelationID(jmsCorrelationID);
+                }
+                
+                if(Objects.nonNull(jmsType)) {
+                    message.setJMSType(jmsType);
+                }
+                
+                properties.applyToMessage(message);
+
+                
+                Message messageToSend;
+                if(Jms2Message.class.isInstance(message)) {
+                    messageToSend = Jms2Message.class.cast(message).getDelegate();
+                } else {
+                    messageToSend = message;
+                }
+                
+                messageProducer.send(messageToSend);
 
                 return null;
             }
@@ -80,7 +98,9 @@ public final class Jms2Producer implements JMSProducer {
 
         return this;
     }
-
+    
+    
+    
     @Override
     public JMSProducer send(final Destination destination, final String body) {
         TextMessage message = Jms2MessageFactory.createTextMessage(session, body);
@@ -184,56 +204,56 @@ public final class Jms2Producer implements JMSProducer {
     }
 
     @Override
-    public JMSProducer setProperty(String arg0, boolean arg1) {
-        properties.setProperty(arg0, arg1);
+    public JMSProducer setProperty(String name, boolean value) {
+        properties.setProperty(name, value);
         return this;
     }
 
     @Override
-    public JMSProducer setProperty(String arg0, byte arg1) {
-        properties.setProperty(arg0, arg1);
+    public JMSProducer setProperty(String name, byte value) {
+        properties.setProperty(name, value);
         return this;
     }
 
     @Override
-    public JMSProducer setProperty(String arg0, short arg1) {
-        properties.setProperty(arg0, arg1);
+    public JMSProducer setProperty(String name, short value) {
+        properties.setProperty(name, value);
         return this;
     }
 
     @Override
-    public JMSProducer setProperty(String arg0, int arg1) {
-        properties.setProperty(arg0, arg1);
+    public JMSProducer setProperty(String name, int value) {
+        properties.setProperty(name, value);
         return this;
     }
 
     @Override
-    public JMSProducer setProperty(String arg0, long arg1) {
-        properties.setProperty(arg0, arg1);
+    public JMSProducer setProperty(String name, long value) {
+        properties.setProperty(name, value);
         return this;
     }
 
     @Override
-    public JMSProducer setProperty(String arg0, float arg1) {
-        properties.setProperty(arg0, arg1);
+    public JMSProducer setProperty(String name, float value) {
+        properties.setProperty(name, value);
         return this;
     }
 
     @Override
-    public JMSProducer setProperty(String arg0, double arg1) {
-        properties.setProperty(arg0, arg1);
+    public JMSProducer setProperty(String name, double value) {
+        properties.setProperty(name, value);
         return this;
     }
 
     @Override
-    public JMSProducer setProperty(String arg0, String arg1) {
-        properties.setProperty(arg0, arg1);
+    public JMSProducer setProperty(String name, String value) {
+        properties.setProperty(name, value);
         return this;
     }
 
     @Override
-    public JMSProducer setProperty(String arg0, Object arg1) {
-        properties.setProperty(arg0, arg1);
+    public JMSProducer setProperty(String name, Object value) {
+        properties.setProperty(name, value);
         return this;
     }
 

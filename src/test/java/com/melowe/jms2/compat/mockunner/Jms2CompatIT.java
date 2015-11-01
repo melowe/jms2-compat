@@ -44,7 +44,7 @@ public class Jms2CompatIT {
     MockQueue mockQueue;
 
     MockTopic mockTopic;
-    
+
     public Jms2CompatIT() {
     }
 
@@ -61,7 +61,10 @@ public class Jms2CompatIT {
     @After
     public void tearDown() {
         mockConnectionFactory.clearConnections();
+        mockQueue.clear();
         mockQueue.reset();
+        mockTopic.clear();
+        mockTopic.reset();
     }
 
     @Test
@@ -187,26 +190,45 @@ public class Jms2CompatIT {
 
         try (JMSContext jmsContext = connectionFactory.createContext(JMSContext.AUTO_ACKNOWLEDGE)) {
 
-            byte[] outcome = jmsContext.createConsumer(mockQueue)
-                    .receiveBody(byte[].class);
+            byte[] outcome = jmsContext.createConsumer(mockQueue).receiveBody(byte[].class);
 
             assertArrayEquals(data, outcome);
         }
     }
-    
+
     @Test
     public void createDurableConsumer() throws Exception {
         String message = "Some message";
         mockTopic.addMessage(new MockTextMessage(message));
-        
+
         try (JMSContext jmsContext = connectionFactory.createContext()) {
-            
+
             JMSConsumer consumer = jmsContext.createDurableConsumer(mockTopic, "MYSUB");
-            
-            assertEquals(message,consumer.receiveBodyNoWait(String.class));
+
+            assertEquals(message, consumer.receiveBodyNoWait(String.class));
             assertNull(consumer.receiveBodyNoWait(String.class));
         }
-        
+
+    }
+
+    @Test
+    public void sendMessageWithProperties() throws Exception {
+
+        try (JMSContext context = connectionFactory.createContext()) {
+            context.createProducer()
+                    .setProperty("MYSTR", "MYSTRVAL")
+                    .setJMSType("Bogus")
+                    .setJMSCorrelationID("JMSCID")
+                    .send(mockQueue, "HELLOW");
+        }
+
+        MockTextMessage result = (MockTextMessage) mockQueue.getMessage();
+     
+        assertEquals("HELLOW", result.getText());
+        assertEquals("JMSCID", result.getJMSCorrelationID());
+        assertEquals("Bogus", result.getJMSType());
+        assertEquals("MYSTRVAL", result.getStringProperty("MYSTR"));
+
     }
 
 }

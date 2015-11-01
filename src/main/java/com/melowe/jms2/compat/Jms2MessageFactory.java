@@ -19,11 +19,15 @@ public class Jms2MessageFactory {
 
             @Override
             public Jms2MapMessage execute() throws JMSException {
-                MapMessage m = session.createMapMessage();
+                MapMessage message = session.createMapMessage();
                 for (Map.Entry<String, Object> entry : map.entrySet()) {
-                    m.setObject(entry.getKey(), entry.getValue());
+                    message.setObject(entry.getKey(), entry.getValue());
                 }
-                return new Jms2MapMessage(m);
+                
+                if (Jms2MapMessage.class.isInstance(message)) {
+                    return Jms2MapMessage.class.cast(message);
+                }
+                return new Jms2MapMessage(message);
             }
         });
 
@@ -46,6 +50,10 @@ public class Jms2MessageFactory {
                     message.writeBytes(data);
                 }
 
+                if (Jms2BytesMessage.class.isInstance(message)) {
+                    return Jms2BytesMessage.class.cast(message);
+                }
+
                 return new Jms2BytesMessage(message);
             }
         });
@@ -64,6 +72,10 @@ public class Jms2MessageFactory {
                 if (Objects.nonNull(data)) {
                     message.setText(data);
                 }
+
+                if (Jms2TextMessage.class.isInstance(message)) {
+                    return Jms2TextMessage.class.cast(message);
+                }
                 return new Jms2TextMessage(message);
             }
         });
@@ -74,7 +86,13 @@ public class Jms2MessageFactory {
 
             @Override
             public Jms2MapMessage execute() throws JMSException {
-                return new Jms2MapMessage(session.createMapMessage());
+                
+                MapMessage message = session.createMapMessage();
+                if (Jms2MapMessage.class.isInstance(message)) {
+                    return Jms2MapMessage.class.cast(message);
+                }
+
+                return new Jms2MapMessage(message);
             }
 
         });
@@ -85,7 +103,12 @@ public class Jms2MessageFactory {
 
             @Override
             public Jms2Message execute() throws JMSException {
-                return new Jms2Message(session.createMessage());
+                Message message = session.createMessage();
+                if(Jms2Message.class.isInstance(message)) {
+                    return Jms2Message.class.cast(message);
+                }
+                
+                return new Jms2Message(message);
             }
 
         });
@@ -105,7 +128,9 @@ public class Jms2MessageFactory {
                 if (Objects.nonNull(object)) {
                     message.setObject(object);
                 }
-
+                if(Jms2ObjectMessage.class.isInstance(message)) {
+                    return Jms2ObjectMessage.class.cast(message);
+                }
                 return new Jms2ObjectMessage(message);
             }
 
@@ -117,7 +142,12 @@ public class Jms2MessageFactory {
 
             @Override
             public Jms2StreamMessage execute() throws JMSException {
-                return new Jms2StreamMessage(session.createStreamMessage());
+                StreamMessage message = session.createStreamMessage();
+                if(Jms2StreamMessage.class.isInstance(message)) {
+                    return Jms2StreamMessage.class.cast(message);
+                }
+                
+                return new Jms2StreamMessage(message);
             }
 
         });

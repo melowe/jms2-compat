@@ -99,4 +99,7 @@ public final class Jms2MessageUtil {
         throw new MessageFormatException("Uable to resolve message type or body");
 
     }
+    
+    
+    
 }

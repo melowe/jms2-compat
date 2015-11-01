@@ -66,6 +66,23 @@ public class Jms2ProducerTest {
     }
 
     @Test
+    public void testSendMessageWithJmsProperties() throws Exception {
+        Message mockMessage = mock(Message.class);
+
+        producer.setJMSCorrelationID("CID");
+        producer.setJMSReplyTo(mock(Queue.class));
+        producer.setJMSType("text");
+        producer.setPriority(9);
+        producer.send(mockDestination, mockMessage);
+
+        verify(mockSession, times(1)).createProducer(mockDestination);
+        verify(mockMessageProducer, times(1)).setPriority(9);
+        verify(mockMessageProducer, times(1)).send(mockMessage);
+        verify(mockMessageProducer, times(1)).setDisableMessageID(false);
+        verify(mockMessageProducer, times(1)).setDisableMessageTimestamp(false);
+    }
+
+    @Test
     public void testSendStringBody() throws Exception {
 
         TextMessage mockMessage = mock(TextMessage.class);
@@ -165,31 +182,52 @@ public class Jms2ProducerTest {
     }
 
     @Test
-    public void testSetProperty_String_boolean() {
+    public void testSetPropertyBoolean() {
+        producer.setProperty("FOO", true);
+        assertTrue(producer.getBooleanProperty("FOO"));
     }
 
     @Test
-    public void testSetProperty_String_byte() {
+    public void testSetPropertyByte() {
+        byte b = 99;
+        producer.setProperty("FOO", b);
+        assertEquals(b, producer.getByteProperty("FOO"));
     }
 
     @Test
-    public void testSetProperty_String_short() {
+    public void testSetPropertyShort() {
+        short s = 89;
+        producer.setProperty("FOO", s);
+        assertEquals(s, producer.getShortProperty("FOO"));
+
     }
 
     @Test
-    public void testSetProperty_String_int() {
+    public void testSetPropertyInt() {
+        int i = 89;
+        producer.setProperty("FOO", i);
+        assertEquals(i, producer.getIntProperty("FOO"));
     }
 
     @Test
-    public void testSetProperty_String_long() {
+    public void testSetPropertyLong() {
+        long l = Long.MAX_VALUE;
+        producer.setProperty("FOO", l);
+        assertEquals(l, producer.getLongProperty("FOO"));
     }
 
     @Test
-    public void testSetProperty_String_float() {
+    public void testSetPropertyFloat() {
+        float f = Float.MAX_VALUE;
+        producer.setProperty("FOO", f);
+        assertEquals(f, producer.getFloatProperty("FOO"), 0.0f);
     }
 
     @Test
-    public void testSetProperty_String_double() {
+    public void testSetPropertyDouble() {
+        double d = Double.MAX_VALUE;
+        producer.setProperty("FOO", d);
+        assertEquals(d, producer.getDoubleProperty("FOO"), 0.0d);
     }
 
     @Test
