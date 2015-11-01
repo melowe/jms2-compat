@@ -75,8 +75,9 @@ public final class Jms2Connection implements Connection {
     }
 
     @Override
-    public ConnectionConsumer createConnectionConsumer(Destination arg0, String arg1, ServerSessionPool arg2, int arg3) throws JMSException {
-        return connection.createConnectionConsumer(arg0, arg1, arg2, arg3);
+    public ConnectionConsumer createConnectionConsumer(Destination destination, String messageSelector, 
+            ServerSessionPool sessionPool, int maxMessages) throws JMSException {
+        return connection.createConnectionConsumer(destination, messageSelector, sessionPool, maxMessages);
     }
 
     @Override
@@ -86,13 +87,15 @@ public final class Jms2Connection implements Connection {
     }
 
     @Override
-    public ConnectionConsumer createDurableConnectionConsumer(Topic arg0, String arg1, String arg2, ServerSessionPool arg3, int arg4) throws JMSException {
-        return connection.createDurableConnectionConsumer(arg0, arg1, arg2, arg3, arg4);
+    public ConnectionConsumer createDurableConnectionConsumer(Topic topic, String subscriptionName, String messageSelector, 
+            ServerSessionPool sessionPool, int maxMessages) throws JMSException {
+        return connection.createDurableConnectionConsumer(topic, subscriptionName, messageSelector, sessionPool, maxMessages);
     }
 
     @Override
-    public ConnectionConsumer createSharedDurableConnectionConsumer(Topic arg0, String arg1, String arg2, ServerSessionPool arg3, int arg4) throws JMSException {
-        return createSharedConnectionConsumer(arg0, arg1, arg2, arg3, arg4);
+    public ConnectionConsumer createSharedDurableConnectionConsumer(Topic topic, String subscriptionName, String messageSelector, 
+            ServerSessionPool sessionPool, int maxMessages) throws JMSException {
+        return createDurableConnectionConsumer(topic, subscriptionName, messageSelector, sessionPool, maxMessages);
     }
 
 }

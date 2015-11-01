@@ -48,6 +48,11 @@ public class Jms2MessageTest {
         jms2Message = null;
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void attemptToCreateJms2MessageFromJms2Message() throws Exception {
+        new Jms2Message(new Jms2Message(mock(Message.class)));
+    }
+    
     @Test
     public void testGetJMSMessageID() throws Exception {
         jms2Message.getJMSMessageID();
