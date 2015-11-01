@@ -265,7 +265,7 @@ public class Jms2Message implements Message {
         return Jms2MessageUtil.isBodyAssignableTo(delegate, c);
     }
 
-    protected Message getDelegate() {
+    public Message getDelegate() {
         return delegate;
     }
 

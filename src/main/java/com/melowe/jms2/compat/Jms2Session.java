@@ -137,12 +137,12 @@ public final class Jms2Session implements Session {
 
     @Override
     public MessageConsumer createSharedConsumer(Topic arg0, String arg1) throws JMSException {
-        return session.createSharedConsumer(arg0, arg1);
+        return new TopicSubscriberAdaptor(session.createDurableSubscriber(arg0, arg1));
     }
 
     @Override
     public MessageConsumer createSharedConsumer(Topic arg0, String arg1, String arg2) throws JMSException {
-        return session.createSharedConsumer(arg0, arg1, arg2);
+        return new TopicSubscriberAdaptor(session.createDurableSubscriber(arg0, arg1,arg2, false));
     }
 
     @Override
@@ -167,22 +167,22 @@ public final class Jms2Session implements Session {
 
     @Override
     public MessageConsumer createDurableConsumer(Topic arg0, String arg1) throws JMSException {
-        return session.createDurableConsumer(arg0, arg1);
+        return new TopicSubscriberAdaptor(createDurableSubscriber(arg0, arg1));
     }
 
     @Override
     public MessageConsumer createDurableConsumer(Topic arg0, String arg1, String arg2, boolean arg3) throws JMSException {
-        return session.createDurableConsumer(arg0, arg1, arg2, arg3);
+        return new TopicSubscriberAdaptor(createDurableSubscriber(arg0, arg1,arg2, arg3));
     }
 
     @Override
     public MessageConsumer createSharedDurableConsumer(Topic arg0, String arg1) throws JMSException {
-        return session.createSharedDurableConsumer(arg0, arg1);
+        return new TopicSubscriberAdaptor(createDurableSubscriber(arg0, arg1));
     }
 
     @Override
     public MessageConsumer createSharedDurableConsumer(Topic arg0, String arg1, String arg2) throws JMSException {
-        return session.createSharedDurableConsumer(arg0, arg1, arg2);
+        return new TopicSubscriberAdaptor(createDurableSubscriber(arg0, arg1,arg2,false));
     }
 
     @Override

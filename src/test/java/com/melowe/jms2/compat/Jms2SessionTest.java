@@ -5,6 +5,7 @@ import javax.jms.BytesMessage;
 import javax.jms.Destination;
 import javax.jms.MapMessage;
 import javax.jms.Message;
+import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.StreamMessage;
@@ -15,6 +16,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -190,6 +192,12 @@ public class Jms2SessionTest {
 
     @Test
     public void testSetMessageListener() throws Exception {
+        MessageListener l = mock(MessageListener.class);
+        jms2Session.setMessageListener(l);
+        verify(mockSession).setMessageListener(any(Jms2MessageListener.class));
+        
+        verifyNoMoreInteractions(mockSession);
+        
     }
 
     @Test
@@ -208,19 +216,36 @@ public class Jms2SessionTest {
     }
 
     @Test
-    public void testCreateConsumer_Destination() throws Exception {
+    public void testCreateConsumer() throws Exception {
+        Destination destination = mock(Destination.class);
+        jms2Session.createConsumer(destination);
+        verify(mockSession).createConsumer(destination);
+        verifyNoMoreInteractions(mockSession);
+              
     }
 
     @Test
-    public void testCreateConsumer_Destination_String() throws Exception {
+    public void testCreateConsumerWithSelector() throws Exception {
+        Destination destination = mock(Destination.class);
+        String selector = "BOSELECTOR";
+        jms2Session.createConsumer(destination,selector);
+        verify(mockSession).createConsumer(destination,selector);
+        verifyNoMoreInteractions(mockSession);
     }
 
     @Test
-    public void testCreateConsumer_3args() throws Exception {
+    public void testCreateConsumerWithSelectorAndNoLocal() throws Exception {
+        Destination destination = mock(Destination.class);
+        String selector = "BOSELECTOR";
+        jms2Session.createConsumer(destination,selector,true);
+        verify(mockSession).createConsumer(destination,selector,true);
+        verifyNoMoreInteractions(mockSession);  
     }
 
     @Test
     public void testCreateSharedConsumer_Topic_String() throws Exception {
+        
+        
     }
 
     @Test
@@ -229,10 +254,15 @@ public class Jms2SessionTest {
 
     @Test
     public void testCreateQueue() throws Exception {
+        jms2Session.createQueue("MYQUEUE");
+        verify(mockSession).createQueue("MYQUEUE");
     }
 
     @Test
     public void testCreateTopic() throws Exception {
+        jms2Session.createTopic("MYTOPIC");
+        verify(mockSession).createTopic("MYTOPIC");
+
     }
 
     @Test

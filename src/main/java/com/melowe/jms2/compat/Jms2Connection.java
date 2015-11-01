@@ -80,8 +80,9 @@ public final class Jms2Connection implements Connection {
     }
 
     @Override
-    public ConnectionConsumer createSharedConnectionConsumer(Topic arg0, String arg1, String arg2, ServerSessionPool arg3, int arg4) throws JMSException {
-        return connection.createSharedConnectionConsumer(arg0, arg1, arg2, arg3, arg4);
+    public ConnectionConsumer createSharedConnectionConsumer(Topic topic, String subscriptionName,
+            String messageSelector, ServerSessionPool sessionPool, int maxMessages) throws JMSException {
+        return createDurableConnectionConsumer(topic, subscriptionName, messageSelector, sessionPool,maxMessages);
     }
 
     @Override
@@ -91,7 +92,7 @@ public final class Jms2Connection implements Connection {
 
     @Override
     public ConnectionConsumer createSharedDurableConnectionConsumer(Topic arg0, String arg1, String arg2, ServerSessionPool arg3, int arg4) throws JMSException {
-        return connection.createSharedDurableConnectionConsumer(arg0, arg1, arg2, arg3, arg4);
+        return createSharedConnectionConsumer(arg0, arg1, arg2, arg3, arg4);
     }
 
 }
