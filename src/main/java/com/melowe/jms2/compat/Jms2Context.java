@@ -266,6 +266,7 @@ public final class Jms2Context implements JMSContext {
     @Override
     public void acknowledge() {
          Jms2MessageUtil.acknowledge(session,acknowledgeMessages);
+         acknowledgeMessages.clear();
     }
 
 }
