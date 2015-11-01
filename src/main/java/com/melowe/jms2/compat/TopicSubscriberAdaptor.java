@@ -24,12 +24,12 @@ public class TopicSubscriberAdaptor implements MessageConsumer,TopicSubscriber {
 
     @Override
     public MessageListener getMessageListener() throws JMSException {
-        return Jms2Util.getMessageListener(this);
+        return topicSubscriber.getMessageListener();
      }
 
     @Override
     public void setMessageListener(MessageListener listener) throws JMSException {
-        Jms2Util.setMessageListener(this, listener);
+        topicSubscriber.setMessageListener(listener);
     }
 
     @Override

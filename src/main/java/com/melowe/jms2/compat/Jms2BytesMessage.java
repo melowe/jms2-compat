@@ -147,4 +147,6 @@ public final class Jms2BytesMessage extends Jms2Message implements BytesMessage 
         delegate.reset();
     }
 
+
+
 }

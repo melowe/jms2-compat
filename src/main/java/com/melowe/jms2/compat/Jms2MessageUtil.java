@@ -33,7 +33,7 @@ public final class Jms2MessageUtil {
     }
 
     static boolean isMapMessage(Message message, Class type) {
-        return MapMessage.class.isInstance(message) && type.isAssignableFrom(java.util.Map.class);
+        return MapMessage.class.isInstance(message) && type.isAssignableFrom(Map.class);
     }
 
     static boolean isPlainMessage(Message message) {
