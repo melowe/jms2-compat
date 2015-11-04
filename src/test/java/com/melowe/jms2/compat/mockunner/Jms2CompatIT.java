@@ -30,7 +30,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class Jms2CompatIT {
@@ -175,16 +174,14 @@ public class Jms2CompatIT {
 
     }
 
-    @Ignore
+
     @Test
     public void receiveBytesBodySynchonously() throws Exception {
 
         byte[] data = "SOMETHING ELSE".getBytes();
         MockBytesMessage msg = new MockBytesMessage();
         msg.writeBytes(data, 0, data.length);
-
-        msg.setReadOnly(true);
-        //  msg.getBytes();
+        msg.reset();
 
         mockQueue.addMessage(msg);
 
