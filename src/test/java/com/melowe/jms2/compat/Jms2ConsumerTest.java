@@ -1,5 +1,6 @@
 package com.melowe.jms2.compat;
 
+import javax.jms.Connection;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageFormatRuntimeException;
@@ -34,7 +35,8 @@ public class Jms2ConsumerTest {
     @Before
     public void setUp() {
         mockMessageConsumer = mock(MessageConsumer.class);
-        consumer = new Jms2Consumer(mock(Session.class),mockMessageConsumer);
+       Jms2Context cxt =  new Jms2Context(mock(Connection.class), mock(Session.class));
+        consumer = new Jms2Consumer(cxt,mockMessageConsumer);
     }
 
     @After

@@ -17,11 +17,12 @@ public class Jms2Consumer implements JMSConsumer {
 
     private final List<Message> acknowledgeMessages = new ArrayList<>();
 
-    private final Session session;
 
-    protected Jms2Consumer(Session session, MessageConsumer consumer) {
-        this.consumer = consumer;
-        this.session = session;
+    private final Jms2Context context;
+    
+    protected Jms2Consumer(Jms2Context context, MessageConsumer consumer) {
+        this.consumer = java.util.Objects.requireNonNull(consumer);
+        this.context = java.util.Objects.requireNonNull(context);
     }
 
     @Override
@@ -36,7 +37,12 @@ public class Jms2Consumer implements JMSConsumer {
 
     @Override
     public void setMessageListener(MessageListener listener) throws JMSRuntimeException {
+        
         Jms2Util.setMessageListener(consumer, listener);
+        if(context.getAutoStart()) {
+            context.start();
+        }
+        
     }
 
     @Override
@@ -105,7 +111,8 @@ public class Jms2Consumer implements JMSConsumer {
         if(message == null) {
             return null;
         }
-        if (Jms2Util.getSessionMode(session) == Session.CLIENT_ACKNOWLEDGE) {
+        
+        if (context.getSessionMode() == Session.CLIENT_ACKNOWLEDGE) {
             acknowledgeMessages.add(message);
         }
         return message;

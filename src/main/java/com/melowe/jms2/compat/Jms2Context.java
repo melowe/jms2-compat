@@ -30,6 +30,8 @@ public final class Jms2Context implements JMSContext {
 
     private boolean autoStart;
 
+    private boolean started;
+    
     private final Session session;
 
     private final Connection connection;
@@ -86,12 +88,18 @@ public final class Jms2Context implements JMSContext {
 
     @Override
     public void start() {
+        if(started) {
+            this.stop();
+        }
         Jms2Util.start(connection);
+        this.started = true;
+        
     }
 
     @Override
     public void stop() {
         Jms2Util.stop(connection);
+        this.started = false;
     }
 
     @Override

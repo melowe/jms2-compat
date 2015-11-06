@@ -6,8 +6,7 @@ import com.mockrunner.mock.jms.MockConnectionFactory;
 import javax.jms.Connection;
 import javax.jms.JMSContext;
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 

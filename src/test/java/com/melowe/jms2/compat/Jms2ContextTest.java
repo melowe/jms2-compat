@@ -14,6 +14,8 @@ import javax.jms.JMSContext;
 import javax.jms.JMSProducer;
 import javax.jms.MapMessage;
 import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.Session;
@@ -29,15 +31,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 public class Jms2ContextTest {
 
@@ -57,6 +52,11 @@ public class Jms2ContextTest {
 
         jmsContext = new Jms2Context(mockConnection, mockSession);
         when(mockConnection.createSession(anyBoolean(), anyInt())).thenReturn(mockSession);
+
+        MessageConsumer mockMessageConsumer = mock(MessageConsumer.class);
+
+        when(mockSession.createConsumer(any(Destination.class))).thenReturn(mockMessageConsumer);
+        when(mockSession.createConsumer(any(Destination.class), anyString())).thenReturn(mockMessageConsumer);
     }
 
     @After
@@ -152,6 +152,14 @@ public class Jms2ContextTest {
     @Test
     public void testStart() throws Exception {
         jmsContext.start();
+        verify(mockConnection, times(1)).start();
+        verifyNoMoreInteractions(mockConnection);
+        verifyZeroInteractions(mockSession);
+
+        reset(mockConnection);
+
+        jmsContext.start();
+        verify(mockConnection, times(1)).stop();
         verify(mockConnection, times(1)).start();
         verifyNoMoreInteractions(mockConnection);
         verifyZeroInteractions(mockSession);
@@ -284,7 +292,7 @@ public class Jms2ContextTest {
         Jms2TextMessage result = (Jms2TextMessage) jmsContext.createTextMessage();
         assertSame(mockMessage, result.getDelegate());
         verify(mockSession, times(1)).createTextMessage();
-       // verify(mockSession, times(1)).getAcknowledgeMode();
+        // verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection);
     }
@@ -568,6 +576,19 @@ public class Jms2ContextTest {
 
         verify(mockSession, times(2)).getAcknowledgeMode();
         verifyNoMoreInteractions(msg, msg2, msg3, mockSession);
+
+    }
+
+    @Test
+    public void testAutoStart() throws Exception {
+        jmsContext.setAutoStart(true);
+        assertTrue(jmsContext.getAutoStart());
+        Queue q = mock(Queue.class);
+        MessageListener listener = mock(MessageListener.class);
+        jmsContext.createConsumer(q).setMessageListener(listener);
+        verify(mockConnection).start();
+        verify(mockSession).createConsumer(q);
+        verifyNoMoreInteractions(mockSession, mockConnection);
 
     }
 

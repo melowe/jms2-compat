@@ -63,15 +63,15 @@ public final class Jms2Util {
     }
 
     static Jms2Consumer createDurableConsumer(Jms2Context context, final Topic topic, final String name) {
-        return new Jms2Consumer(context.getSession(),createDurableMessageConsumer(context.getSession(), topic, name));
+        return new Jms2Consumer(context,createDurableMessageConsumer(context.getSession(), topic, name));
     }
 
     static Jms2Consumer createDurableConsumer(Jms2Context context, final Topic topic, final String name, final String selector, final boolean noLocal) {
-        return new Jms2Consumer(context.getSession(),createDurableMessageConsumer(context.getSession(), topic, name, selector, noLocal));
+        return new Jms2Consumer(context,createDurableMessageConsumer(context.getSession(), topic, name, selector, noLocal));
     }
 
     static Jms2Consumer createSharedDurableConsumer(Jms2Context context, Topic topic, String name, String selector) {
-         return new Jms2Consumer(context.getSession(),createDurableMessageConsumer(context.getSession(), topic, name,selector,false));
+         return new Jms2Consumer(context,createDurableMessageConsumer(context.getSession(), topic, name,selector,false));
     }
 
     static Jms2Consumer createSharedConsumer(Jms2Context context, Topic topic, String name) {
@@ -389,8 +389,9 @@ public final class Jms2Util {
     }
 
     static Jms2Consumer createConsumer(Jms2Context context, Destination destination, String selector, Boolean arg) {
-
-        Jms2Consumer consumer =  new Jms2Consumer(context.getSession(),createMessageConsumer(context.getSession(), destination, selector, null));
+        MessageConsumer messageConsumer = createMessageConsumer(context.getSession(), destination, selector, null);
+        
+        Jms2Consumer consumer =  new Jms2Consumer(context,messageConsumer);
         return context.addConsumer(consumer);
         
     }
