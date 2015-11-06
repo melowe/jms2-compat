@@ -4,6 +4,7 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageFormatRuntimeException;
 import javax.jms.MessageListener;
+import javax.jms.Session;
 import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
 import org.junit.After;
@@ -33,7 +34,7 @@ public class Jms2ConsumerTest {
     @Before
     public void setUp() {
         mockMessageConsumer = mock(MessageConsumer.class);
-        consumer = new Jms2Consumer(mockMessageConsumer);
+        consumer = new Jms2Consumer(mock(Session.class),mockMessageConsumer);
     }
 
     @After

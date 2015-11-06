@@ -6,6 +6,7 @@ import com.melowe.jms2.compat.Jms2TextMessage;
 import com.mockrunner.mock.jms.JMSMockObjectFactory;
 import com.mockrunner.mock.jms.MockBytesMessage;
 import com.mockrunner.mock.jms.MockConnectionFactory;
+import com.mockrunner.mock.jms.MockMessage;
 import com.mockrunner.mock.jms.MockQueue;
 import com.mockrunner.mock.jms.MockTextMessage;
 import com.mockrunner.mock.jms.MockTopic;
@@ -25,8 +26,11 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.jms.TextMessage;
 import org.junit.After;
+import org.junit.Assert;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -227,5 +231,25 @@ public class Jms2CompatIT {
         assertEquals("MYSTRVAL", result.getStringProperty("MYSTR"));
 
     }
+    
+    @Test
+    public void recieveAyncMessagesClientAck() throws Exception {
+        MockMessage mockMessage = new MockMessage();
+        
+        mockQueue.addMessage(mockMessage);
+        
+        assertFalse(mockMessage.isAcknowledged());
+
+        try (JMSContext context = connectionFactory.createContext(JMSContext.CLIENT_ACKNOWLEDGE)) {
+            Message m = context.createConsumer(mockQueue).receive();
+            assertNotNull(m);
+            assertFalse(mockMessage.isAcknowledged());
+            context.acknowledge();
+        }
+        
+        assertTrue(mockMessage.isAcknowledged());
+        
+    }
+    
 
 }

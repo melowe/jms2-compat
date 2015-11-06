@@ -1,5 +1,7 @@
 package com.melowe.jms2.compat;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSException;
 import javax.jms.JMSRuntimeException;
@@ -7,13 +9,19 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageFormatException;
 import javax.jms.MessageListener;
+import javax.jms.Session;
 
 public class Jms2Consumer implements JMSConsumer {
 
     private final MessageConsumer consumer;
 
-    public Jms2Consumer(MessageConsumer consumer) {
+    private final List<Message> acknowledgeMessages = new ArrayList<>();
+
+    private final Session session;
+
+    protected Jms2Consumer(Session session, MessageConsumer consumer) {
         this.consumer = consumer;
+        this.session = session;
     }
 
     @Override
@@ -28,23 +36,23 @@ public class Jms2Consumer implements JMSConsumer {
 
     @Override
     public void setMessageListener(MessageListener listener) throws JMSRuntimeException {
-
         Jms2Util.setMessageListener(consumer, listener);
     }
 
     @Override
     public Message receive() {
-        return Jms2Util.receive(consumer);
+        return add( Jms2Util.receive(consumer) );
     }
 
     @Override
     public Message receive(long timeout) {
-        return Jms2Util.receive(consumer, timeout);
+        
+        return add( Jms2Util.receive(consumer, timeout) );
     }
 
     @Override
     public Message receiveNoWait() {
-        return Jms2Util.receiveNoWait(consumer);
+        return add( Jms2Util.receiveNoWait(consumer));
     }
 
     @Override
@@ -58,7 +66,7 @@ public class Jms2Consumer implements JMSConsumer {
         if (msg == null) {
             return null;
         }
-
+        add(msg);
         return getBody(msg, c);
 
     }
@@ -93,4 +101,29 @@ public class Jms2Consumer implements JMSConsumer {
         return getBody(msg, type);
     }
 
+    private <M extends Message> M add(M message) {
+        if(message == null) {
+            return null;
+        }
+        if (Jms2Util.getSessionMode(session) == Session.CLIENT_ACKNOWLEDGE) {
+            acknowledgeMessages.add(message);
+        }
+        return message;
+    }
+
+    protected void acknowledge() {
+        
+        for (final Message msg : acknowledgeMessages) {
+            Jms2Util.execute(new Callback<Void>() {
+
+                @Override
+                public Void execute() throws JMSException {
+                    msg.acknowledge();
+                    return null;
+                }
+            });
+        }
+        acknowledgeMessages.clear();
+        
+    }
 }

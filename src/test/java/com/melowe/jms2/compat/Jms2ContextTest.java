@@ -202,7 +202,6 @@ public class Jms2ContextTest {
         assertSame(mockMessage, m.getDelegate());
 
         verify(mockSession, times(1)).createBytesMessage();
-        verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection, mockMessage);
 
@@ -218,7 +217,6 @@ public class Jms2ContextTest {
         assertSame(mockMessage, result.getDelegate());
 
         verify(mockSession, times(1)).createMapMessage();
-        verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection, mockMessage);
     }
@@ -230,7 +228,6 @@ public class Jms2ContextTest {
 
         Jms2Message result = (Jms2Message) jmsContext.createMessage();
         assertSame(mockMessage, result.getDelegate());
-        verify(mockSession, times(1)).getAcknowledgeMode();
         verify(mockSession, times(1)).createMessage();
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection, mockMessage);
@@ -244,7 +241,6 @@ public class Jms2ContextTest {
         Jms2ObjectMessage result = (Jms2ObjectMessage) jmsContext.createObjectMessage();
         assertSame(mockMessage, result.getDelegate());
         verify(mockSession, times(1)).createObjectMessage();
-        verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection, mockMessage);
     }
@@ -261,7 +257,7 @@ public class Jms2ContextTest {
 
         verify(mockSession, times(1)).createObjectMessage();
         verify(mockMessage, times(1)).setObject(payload);
-        verify(mockSession, times(1)).getAcknowledgeMode();
+        //verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession, mockMessage);
 
         verifyZeroInteractions(mockConnection);
@@ -275,7 +271,7 @@ public class Jms2ContextTest {
 
         assertSame(mockMessage, result.getDelegate());
         verify(mockSession, times(1)).createStreamMessage();
-        verify(mockSession, times(1)).getAcknowledgeMode();
+        //verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection);
     }
@@ -288,7 +284,7 @@ public class Jms2ContextTest {
         Jms2TextMessage result = (Jms2TextMessage) jmsContext.createTextMessage();
         assertSame(mockMessage, result.getDelegate());
         verify(mockSession, times(1)).createTextMessage();
-        verify(mockSession, times(1)).getAcknowledgeMode();
+       // verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession);
         verifyZeroInteractions(mockConnection);
     }
@@ -302,7 +298,7 @@ public class Jms2ContextTest {
         assertSame(mockMessage, result.getDelegate());
         verify(mockSession, times(1)).createTextMessage();
         verify(mockMessage, times(1)).setText("payload");
-        verify(mockSession, times(1)).getAcknowledgeMode();
+        //verify(mockSession, times(1)).getAcknowledgeMode();
         verifyNoMoreInteractions(mockSession, mockMessage);
         verifyZeroInteractions(mockConnection);
     }

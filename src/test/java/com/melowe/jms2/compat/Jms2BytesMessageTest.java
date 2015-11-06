@@ -202,7 +202,6 @@ public class Jms2BytesMessageTest {
         Object obj = Collections.EMPTY_LIST;
         jms2BytesMessage.writeObject(obj);
         verify(mockMessage, times(1)).writeObject(obj);
-
     }
 
     @Test

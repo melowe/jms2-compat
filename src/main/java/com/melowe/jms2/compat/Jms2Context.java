@@ -34,7 +34,7 @@ public final class Jms2Context implements JMSContext {
 
     private final Connection connection;
 
-    private final List<Message> acknowledgeMessages = new ArrayList<>();
+    private final List<Jms2Consumer> consumers = new ArrayList<>();
     
     protected Jms2Context(Connection connection, Session session) {
         this.connection = Objects.requireNonNull(connection);
@@ -109,52 +109,47 @@ public final class Jms2Context implements JMSContext {
         Jms2Util.close(connection, session);
     }
 
-    private <M extends Message> M add(M message) {
-        if(Jms2Util.getSessionMode(session) == Session.AUTO_ACKNOWLEDGE) {
-            acknowledgeMessages.add(message);
-        }
-        return message;
-    }
+
     
     @Override
     public BytesMessage createBytesMessage() {
-        return add(Jms2MessageFactory.createBytesMessage(session));
+        return Jms2MessageFactory.createBytesMessage(session);
     }
 
     @Override
     public MapMessage createMapMessage() {
-        return add(Jms2MessageFactory.createMapMessage(session));
+        return Jms2MessageFactory.createMapMessage(session);
     }
 
     @Override
     public Message createMessage() {
-        return add(Jms2MessageFactory.createMessage(session));
+        return Jms2MessageFactory.createMessage(session);
     }
 
     @Override
     public ObjectMessage createObjectMessage() {
-        return add(Jms2MessageFactory.createObjectMessage(session));
+        return Jms2MessageFactory.createObjectMessage(session);
     }
 
     @Override
     public ObjectMessage createObjectMessage(Serializable object) {
-        return add(Jms2MessageFactory.createObjectMessage(session, object));
+        return Jms2MessageFactory.createObjectMessage(session, object);
     }
 
     @Override
     public StreamMessage createStreamMessage() {
-        return add(Jms2MessageFactory.createStreamMessage(session));
+        return Jms2MessageFactory.createStreamMessage(session);
     }
 
     @Override
     public TextMessage createTextMessage() {
 
-        return add(Jms2MessageFactory.createTextMessage(session));
+        return Jms2MessageFactory.createTextMessage(session);
     }
 
     @Override
     public TextMessage createTextMessage(String text) {
-        return add(Jms2MessageFactory.createTextMessage(session, text));
+        return Jms2MessageFactory.createTextMessage(session, text);
     }
 
     @Override
@@ -184,18 +179,18 @@ public final class Jms2Context implements JMSContext {
 
     @Override
     public JMSConsumer createConsumer(Destination destination) {
-        return Jms2Util.createConsumer(session, destination);
+        return Jms2Util.createConsumer(this, destination);
     }
 
     @Override
     public JMSConsumer createConsumer(Destination destination, String selector) {
-        return Jms2Util.createConsumer(session, destination, selector);
+        return Jms2Util.createConsumer(this, destination, selector);
     }
 
     @Override
     public JMSConsumer createConsumer(Destination destination, String selector, boolean arg2) {
 
-        return Jms2Util.createConsumer(session, destination, selector, arg2);
+        return Jms2Util.createConsumer(this, destination, selector, arg2);
     }
 
     @Override
@@ -210,32 +205,32 @@ public final class Jms2Context implements JMSContext {
 
     @Override
     public JMSConsumer createDurableConsumer(Topic topic, String name) {
-        return Jms2Util.createDurableConsumer(session, topic, name);
+        return Jms2Util.createDurableConsumer(this, topic, name);
     }
 
     @Override
     public JMSConsumer createDurableConsumer(Topic topic, String name, String selector, boolean noLocal) {
-        return Jms2Util.createDurableConsumer(session, topic, name, selector, noLocal);
+        return Jms2Util.createDurableConsumer(this, topic, name, selector, noLocal);
     }
 
     @Override
     public JMSConsumer createSharedDurableConsumer(Topic topic, String name) {
-        return Jms2Util.createDurableConsumer(session, topic, name);
+        return Jms2Util.createDurableConsumer(this, topic, name);
     }
 
     @Override
     public JMSConsumer createSharedDurableConsumer(Topic topic, String name, String selector) {
-        return Jms2Util.createSharedDurableConsumer(session, topic, name, selector);
+        return Jms2Util.createSharedDurableConsumer(this, topic, name, selector);
     }
 
     @Override
     public JMSConsumer createSharedConsumer(Topic topic, String name) {
-        return Jms2Util.createSharedConsumer(session, topic, name);
+        return Jms2Util.createSharedConsumer(this, topic, name);
     }
 
     @Override
     public JMSConsumer createSharedConsumer(Topic topic, String name, String selector) {
-        return Jms2Util.createSharedConsumer(session, topic, name, selector);
+        return Jms2Util.createSharedConsumer(this, topic, name, selector);
     }
 
     @Override
@@ -265,8 +260,20 @@ public final class Jms2Context implements JMSContext {
 
     @Override
     public void acknowledge() {
-         Jms2MessageUtil.acknowledge(session,acknowledgeMessages);
-         acknowledgeMessages.clear();
+        for(Jms2Consumer consumer : consumers) {
+            consumer.acknowledge();
+        }
     }
+
+    public Session getSession() {
+        return session;
+    }
+
+    Jms2Consumer addConsumer(Jms2Consumer consumer) {
+        this.consumers.add(consumer);
+        return consumer;
+    }
+    
+    
 
 }

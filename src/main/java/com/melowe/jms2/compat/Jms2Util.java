@@ -4,7 +4,6 @@ import javax.jms.Connection;
 import javax.jms.ConnectionMetaData;
 import javax.jms.Destination;
 import javax.jms.ExceptionListener;
-import javax.jms.JMSConsumer;
 import javax.jms.JMSException;
 import javax.jms.JMSRuntimeException;
 import javax.jms.Message;
@@ -63,24 +62,24 @@ public final class Jms2Util {
 
     }
 
-    static JMSConsumer createDurableConsumer(final Session session, final Topic topic, final String name) {
-        return new Jms2Consumer(createDurableMessageConsumer(session, topic, name));
+    static Jms2Consumer createDurableConsumer(Jms2Context context, final Topic topic, final String name) {
+        return new Jms2Consumer(context.getSession(),createDurableMessageConsumer(context.getSession(), topic, name));
     }
 
-    static JMSConsumer createDurableConsumer(final Session session, final Topic topic, final String name, final String selector, final boolean noLocal) {
-        return new Jms2Consumer(createDurableMessageConsumer(session, topic, name, selector, noLocal));
+    static Jms2Consumer createDurableConsumer(Jms2Context context, final Topic topic, final String name, final String selector, final boolean noLocal) {
+        return new Jms2Consumer(context.getSession(),createDurableMessageConsumer(context.getSession(), topic, name, selector, noLocal));
     }
 
-    static JMSConsumer createSharedDurableConsumer(Session session, Topic topic, String name, String selector) {
-         return new Jms2Consumer(createDurableMessageConsumer(session, topic, name,selector,false));
+    static Jms2Consumer createSharedDurableConsumer(Jms2Context context, Topic topic, String name, String selector) {
+         return new Jms2Consumer(context.getSession(),createDurableMessageConsumer(context.getSession(), topic, name,selector,false));
     }
 
-    static JMSConsumer createSharedConsumer(Session session, Topic topic, String name) {
-        return createSharedConsumer(session, topic, name, null);
+    static Jms2Consumer createSharedConsumer(Jms2Context context, Topic topic, String name) {
+        return context.addConsumer(createSharedConsumer(context, topic, name, null));
     }
 
-    static JMSConsumer createSharedConsumer(Session session, Topic topic, String name, String selector) {
-        return createDurableConsumer(session, topic, name, selector, false);
+    static Jms2Consumer createSharedConsumer(Jms2Context context, Topic topic, String name, String selector) {
+        return context.addConsumer(createDurableConsumer(context, topic, name, selector, false));
     }
 
     static JMSRuntimeException uncheck(MessageFormatException ex) {
@@ -381,16 +380,19 @@ public final class Jms2Util {
         });
     }
 
-    static JMSConsumer createConsumer(Session session, Destination destination) {
-        return createConsumer(session, destination, null, null);
+    static Jms2Consumer createConsumer(Jms2Context context, Destination destination) {
+        return createConsumer(context, destination, null, null);
     }
 
-    static JMSConsumer createConsumer(Session session, Destination destination, String selector) {
-        return createConsumer(session, destination, selector, null);
+    static Jms2Consumer createConsumer(Jms2Context context, Destination destination, String selector) {
+        return createConsumer(context, destination, selector, null);
     }
 
-    static JMSConsumer createConsumer(Session session, Destination destination, String selector, Boolean arg) {
-        return new Jms2Consumer(createMessageConsumer(session, destination, selector, null));
+    static Jms2Consumer createConsumer(Jms2Context context, Destination destination, String selector, Boolean arg) {
+
+        Jms2Consumer consumer =  new Jms2Consumer(context.getSession(),createMessageConsumer(context.getSession(), destination, selector, null));
+        return context.addConsumer(consumer);
+        
     }
 
     static Queue createQueue(final Session session, final String queueName) {
