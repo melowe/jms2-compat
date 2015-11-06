@@ -1,6 +1,6 @@
 package com.melowe.jms2.compat;
 
-public class Objects {
+public class ObjectsUtil {
 
     static boolean nonNull(Object obj) {
         return obj != null;

@@ -57,26 +57,26 @@ public final class Jms2Producer implements JMSProducer {
                 messageProducer.setDisableMessageID(disableMessageID);
                 messageProducer.setDisableMessageTimestamp(disableMessageTimestamp);
 
-                if (Objects.nonNull(deliveryMode)) {
+                if (ObjectsUtil.nonNull(deliveryMode)) {
                     messageProducer.setDeliveryMode(deliveryMode);
                 }
-                if (Objects.nonNull(timeToLive)) {
+                if (ObjectsUtil.nonNull(timeToLive)) {
                     messageProducer.setTimeToLive(timeToLive);
                 }
 
-                if (Objects.nonNull(priourity)) {
+                if (ObjectsUtil.nonNull(priourity)) {
                     messageProducer.setPriority(priourity);
                 }
 
-                if (Objects.nonNull(replyTo)) {
+                if (ObjectsUtil.nonNull(replyTo)) {
                     message.setJMSReplyTo(replyTo);
                 }
 
-                if(Objects.nonNull(jmsCorrelationID)) {
+                if(ObjectsUtil.nonNull(jmsCorrelationID)) {
                     message.setJMSCorrelationID(jmsCorrelationID);
                 }
                 
-                if(Objects.nonNull(jmsType)) {
+                if(ObjectsUtil.nonNull(jmsType)) {
                     message.setJMSType(jmsType);
                 }
                 

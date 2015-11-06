@@ -46,7 +46,7 @@ public class Jms2MessageFactory {
             @Override
             public Jms2BytesMessage execute() throws JMSException {
                 BytesMessage message = session.createBytesMessage();
-                if (Objects.nonNull(data) && data.length > 0) {
+                if (ObjectsUtil.nonNull(data) && data.length > 0) {
                     message.writeBytes(data);
                 }
 
@@ -69,7 +69,7 @@ public class Jms2MessageFactory {
             @Override
             public Jms2TextMessage execute() throws JMSException {
                 TextMessage message = session.createTextMessage();
-                if (Objects.nonNull(data)) {
+                if (ObjectsUtil.nonNull(data)) {
                     message.setText(data);
                 }
 
@@ -125,7 +125,7 @@ public class Jms2MessageFactory {
             @Override
             public Jms2ObjectMessage execute() throws JMSException {
                 ObjectMessage message = session.createObjectMessage();
-                if (Objects.nonNull(object)) {
+                if (ObjectsUtil.nonNull(object)) {
                     message.setObject(object);
                 }
                 if(Jms2ObjectMessage.class.isInstance(message)) {

@@ -92,7 +92,7 @@ public class Jms2Consumer implements JMSConsumer {
     @Override
     public <T> T receiveBody(Class<T> type, long timeout) {
         Message msg = receive(timeout);
-        if (Objects.isNull(msg)) {
+        if (ObjectsUtil.isNull(msg)) {
             return null;
         }
         return getBody(msg, type);
@@ -101,7 +101,7 @@ public class Jms2Consumer implements JMSConsumer {
     @Override
     public <T> T receiveBodyNoWait(Class<T> type) {
         Message msg = receiveNoWait();
-        if (Objects.isNull(msg)) {
+        if (ObjectsUtil.isNull(msg)) {
             return null;
         }
         return getBody(msg, type);
