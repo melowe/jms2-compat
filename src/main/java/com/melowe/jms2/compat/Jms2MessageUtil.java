@@ -51,7 +51,7 @@ public final class Jms2MessageUtil {
     }
 
     static boolean isObjectMessage(Message message, Class type) {
-        return ObjectMessage.class.isInstance(message) && type.isAssignableFrom(java.io.Serializable.class);
+        return ObjectMessage.class.isInstance(message) && java.io.Serializable.class.isAssignableFrom(type);
     }
 
     static boolean isMapMessage(Message message, Class type) {
