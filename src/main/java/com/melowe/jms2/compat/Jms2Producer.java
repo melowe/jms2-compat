@@ -81,16 +81,8 @@ public final class Jms2Producer implements JMSProducer {
                 }
                 
                 properties.applyToMessage(message);
-
                 
-                Message messageToSend;
-                if(Jms2Message.class.isInstance(message)) {
-                    messageToSend = Jms2Message.class.cast(message).getDelegate();
-                } else {
-                    messageToSend = message;
-                }
-                
-                messageProducer.send(messageToSend);
+                messageProducer.send(message);
 
                 return null;
             }
