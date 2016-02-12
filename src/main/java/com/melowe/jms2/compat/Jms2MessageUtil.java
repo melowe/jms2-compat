@@ -43,11 +43,11 @@ public final class Jms2MessageUtil {
     }
 
     static boolean isTextMessage(Message message, Class type) {
-        return TextMessage.class.isInstance(message) && type.isAssignableFrom(String.class);
+        return TextMessage.class.isInstance(message) && String.class.isAssignableFrom(type);
     }
 
     static boolean isBytesMessage(Message message, Class type) {
-        return BytesMessage.class.isInstance(message) && type.isAssignableFrom(byte[].class);
+        return BytesMessage.class.isInstance(message) && byte[].class.isAssignableFrom(type);
     }
 
     static boolean isObjectMessage(Message message, Class type) {
@@ -55,7 +55,7 @@ public final class Jms2MessageUtil {
     }
 
     static boolean isMapMessage(Message message, Class type) {
-        return MapMessage.class.isInstance(message) && type.isAssignableFrom(Map.class);
+        return MapMessage.class.isInstance(message) && Map.class.isAssignableFrom(type);
     }
 
     static boolean isPlainMessage(Message message) {
