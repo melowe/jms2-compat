@@ -4,7 +4,7 @@ jdk:
 
 deploy: 
     provider: script
-    script: echo 'hello'
+    - echo 'hello'
     on:
         condition: true
         all_branches: true
