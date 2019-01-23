@@ -7,3 +7,4 @@ deploy:
     script: echo 'hello'
     on:
         condition: true
+        all_branches: true
