@@ -3,5 +3,5 @@ jdk:
 - openjdk7
 
 install: 
- script: echo "skip"
+ script: "echo 'skip'"
 
