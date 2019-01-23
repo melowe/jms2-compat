@@ -4,7 +4,7 @@ jdk:
 
 stages:
     name: deploy
-    if: false
+    if: true
 
 deploy: 
     provider: script
