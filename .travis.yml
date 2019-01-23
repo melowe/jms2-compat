@@ -6,9 +6,6 @@ stages:
     name: deploy
     if: false
 
-install: 
-    script: mvn compile -DskipTests=true
-
 deploy: 
     provider: script
     script: echo 'hello'
