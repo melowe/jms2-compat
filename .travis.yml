@@ -3,5 +3,7 @@ jdk:
 - openjdk7
 
 install: 
+ script: mvn -DskipTests=true compile
  - echo 'Install stage'
+ 
 
