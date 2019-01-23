@@ -2,10 +2,8 @@ language: java
 jdk:
 - openjdk7
 
-stages:
-    name: deploy
-    if: true
-
 deploy: 
     provider: script
     script: echo 'hello'
+    on:
+        condition: true
