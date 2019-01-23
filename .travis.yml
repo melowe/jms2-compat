@@ -2,8 +2,13 @@ language: java
 jdk:
 - openjdk7
 
-install: 
- script: mvn -DskipTests=true compile
- - echo 'Install stage'
- 
+stages:
+    name: deploy
+    if: false
 
+install: 
+    script: mvn compile -DskipTests=true
+
+deploy: 
+    provider: script
+    script: echo 'hello'
